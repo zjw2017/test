@@ -14,9 +14,8 @@ jobs:
       - name: Display Configuration
         run: |
           echo "Compiler Device:${device}"
-          echo "device=${device}" >> $GITHUB_ENV
         env:
           device: ${{ matrix.device }}
       - name: Display Configuration Second
         run: |
-          echo "Compiler Device:${{ env.env_version }}"
+          echo "Compiler Device:${device}"
