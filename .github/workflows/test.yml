@@ -1,0 +1,16 @@
+name: CI
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device:
+          - umi
+          - cmi
+          - cas
+    steps:
+      - name: Display Configuration
+        run: |
+          echo "Compiler Device:${device} --version"
+        env:
+          device: ${{ matrix.device }}
