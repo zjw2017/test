@@ -20,3 +20,6 @@ jobs:
       - name: Display Configuration Second
         run: |
           echo "Compiler Device:${{ env.device }}"
+      - name: Space Check
+        run: |
+          df -hl
