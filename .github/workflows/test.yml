@@ -14,7 +14,7 @@ jobs:
      - name: Space Check
        run: |
           df -hl
-     - name: Remove useless package
+     - name: 删除无用的包
        run: |
         docker rmi `docker images -q`
         sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/sudo apt/sources.list.d
@@ -22,7 +22,7 @@ jobs:
         sudo apt -y autoremove --purge
         sudo apt -y autoclean
         sudo apt clean
-     - name: Maximize and mount build space
+     - name: 最大化构建空间
        uses: easimon/maximize-build-space@master
        with:
         root-reserve-mb: 1024
