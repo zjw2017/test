@@ -14,6 +14,7 @@ jobs:
      - name: Space Check
        run: |
           df -hl
+          uname -n
      - name: 删除无用的包
        run: |
         docker rmi `docker images -q`
