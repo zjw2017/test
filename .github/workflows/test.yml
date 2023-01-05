@@ -13,6 +13,9 @@ jobs:
     steps:
      - name: Space Check
        run: |
+          echo "date=V14.0.22.12.27.DEV | cut -d"/" -f4)" >> $GITHUB_ENV
+     - name: Space Check
+       run: |
           df -hl
           date
           sudo timedatectl set-timezone Asia/Shanghai
