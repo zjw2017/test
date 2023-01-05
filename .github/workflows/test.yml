@@ -15,7 +15,7 @@ jobs:
        run: |
           df -hl
           date
-          timedatectl set-timezone Asia/Shanghai
+          sudo timedatectl set-timezone Asia/Shanghai
           date
           uname -n
      - name: 删除无用的包
