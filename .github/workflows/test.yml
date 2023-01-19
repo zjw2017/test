@@ -13,11 +13,6 @@ jobs:
      - name: Space Check
        run: |
           echo "date=V14.0.22.12.27.DEV | cut -d"/" -f4)" >> $GITHUB_ENV
-          ls -l /bin/sh
-          tar -zxvf "$GITHUB_WORKSPACE"/boot_official.tar.gz -C "$GITHUB_WORKSPACE"/
-          # 修补Magisk 25.2
-          sh "$GITHUB_WORKSPACE"/tools/magisk_patch/boot_patch.sh "$GITHUB_WORKSPACE"/boot_official.img
-          mv "$GITHUB_WORKSPACE"/tools/magisk_patch/new-boot.img "$GITHUB_WORKSPACE"/boot_magisk.img
      - name: Space Check
        run: |
           df -hl
