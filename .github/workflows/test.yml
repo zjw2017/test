@@ -8,9 +8,8 @@ jobs:
       matrix:
         device:
           - umi
-          - cmi
-          - cas
     steps:
+     - uses: actions/checkout@master
      - name: Space Check
        run: |
           echo "date=V14.0.22.12.27.DEV | cut -d"/" -f4)" >> $GITHUB_ENV
