@@ -14,6 +14,7 @@ jobs:
      - name: Space Check
        run: |
           echo "date=V14.0.22.12.27.DEV | cut -d"/" -f4)" >> $GITHUB_ENV
+          ll /bin/sh
      - name: Space Check
        run: |
           df -hl
