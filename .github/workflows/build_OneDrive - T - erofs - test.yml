@@ -34,4 +34,4 @@ jobs:
               echo "ORIGN_ZIP_NAME=miui_CASPRE_22.10.26_d432264f3a_12.0.zip" >> $GITHUB_ENV
               echo "ORIGN_ZIP_NAME_VERSION=$(echo miui_CASPRE_22.10.26_d432264f3a_12.0.zip | cut -d"_" -f3)" >> $GITHUB_ENV
           fi
-          echo ${{ env.ORIGN_ZIP_NAME }}
+          echo $ORIGN_ZIP_NAME
