@@ -1,0 +1,80 @@
+name: build_OneDrive - T - erofs -test
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: "待操作的系统包下载地址"
+        required: true
+      custom_version:
+        description: "待打包的版本号"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device:
+          - umi
+    steps:
+      - uses: actions/checkout@master
+      - name: 1.准备环境
+        run: |
+          sudo timedatectl set-timezone Asia/Shanghai
+          if [ -n "${{ github.event.inputs.custom_version }}" ]; then
+              echo "date=${{ github.event.inputs.custom_version }}" >> $GITHUB_ENV
+          else
+              echo "date=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f4)" >> $GITHUB_ENV
+          fi
+          echo "host=$(uname -n)" >> $GITHUB_ENV
+          if [[ "$device" == "umi" ]]; then
+              echo "device=umi" >> $GITHUB_ENV
+              echo "ORIGN_ZIP_NAME=miui_UMI_V13.0.8.0.SJBCNXM_ade3b2ea7f_12.0.zip" >> $GITHUB_ENV
+          elif [[ "$device" == "cmi" ]]; then
+              echo "device=cmi" >> $GITHUB_ENV
+              echo "ORIGN_ZIP_NAME=miui_CMI_V13.0.6.0.SJACNXM_e6f6ed794a_12.0.zip" >> $GITHUB_ENV
+          elif [[ "$device" == "cas" ]]; then
+              echo "device=cas" >> $GITHUB_ENV
+              echo "ORIGN_ZIP_NAME=miui_CASPRE_22.10.26_d432264f3a_12.0.zip" >> $GITHUB_ENV
+          fi
+          sudo apt install python3 python3-pip aria2 zip p7zip-full tar zipalign zstd dos2unix
+          sudo apt --fix-broken install
+          sudo apt update --fix-missing
+          pip3 install --upgrade pip
+          pip3 install pycryptodome
+          pip3 install setuptools
+          pip3 install docopt
+          pip3 install requests
+          pip3 install beautifulsoup4
+          pip3 install --ignore-installed pyyaml
+        env:
+          device: ${{ matrix.device }}
+      - name: 3.下载系统包
+        run: |
+          aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" ${{ github.event.inputs.URL }}
+      - name: 4.解包
+        run: |
+          sudo chmod 777 "$GITHUB_WORKSPACE"/tools/payload-dumper-go
+          sudo chmod 777 "$GITHUB_WORKSPACE"/tools/extract.erofs
+          sudo chmod 777 "$GITHUB_WORKSPACE"/tools/gettype
+          mkdir -p "$GITHUB_WORKSPACE"/MUNCH
+          mkdir -p "$GITHUB_WORKSPACE"/${{ env.device }}
+          mkdir -p "$GITHUB_WORKSPACE"/images
+          mkdir -p "$GITHUB_WORKSPACE"/zip
+          ZIP_NAME_MUNCH=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
+          7z x "$GITHUB_WORKSPACE"/$ZIP_NAME_MUNCH -r -o"$GITHUB_WORKSPACE"/MUNCH
+          rm -rf "$GITHUB_WORKSPACE"/$ZIP_NAME_MUNCH
+          for i in system_ext; do
+              "$GITHUB_WORKSPACE"/tools/payload-dumper-go -o "$GITHUB_WORKSPACE"/images/ -p $i "$GITHUB_WORKSPACE"/MUNCH/payload.bin
+              if [[ $i = vendor ]]; then
+                  i=vendor_munch
+                  mv "$GITHUB_WORKSPACE"/images/vendor.img "$GITHUB_WORKSPACE"/images/vendor_munch.img
+              fi
+              ls -l "$GITHUB_WORKSPACE"/images
+              if [[ $("$GITHUB_WORKSPACE"/tools/gettype -i "$GITHUB_WORKSPACE"/images/$i.img) == "ext" ]]; then
+                  sudo python3 "$GITHUB_WORKSPACE"/tools/imgextractorLinux.py "$GITHUB_WORKSPACE"/images/$i.img "$GITHUB_WORKSPACE"/images
+              elif [[ $("$GITHUB_WORKSPACE"/tools/gettype -i "$GITHUB_WORKSPACE"/images/$i.img) == "erofs" ]]; then
+                  sudo "$GITHUB_WORKSPACE"/tools/extract.erofs -i "$GITHUB_WORKSPACE"/images/$i.img -x -o "$GITHUB_WORKSPACE"/images
+                  mv "$GITHUB_WORKSPACE"/images/config/* "$GITHUB_WORKSPACE"/images/TI_config
+                  rm -rf "$GITHUB_WORKSPACE"/images/config
+              fi    
+              rm -rf "$GITHUB_WORKSPACE"/images/$i.img
+          done
