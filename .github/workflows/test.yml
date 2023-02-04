@@ -2,14 +2,38 @@ name: free_memory
 on:
   workflow_dispatch:
 jobs:
-  build:
+  prepare_variables:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         device:
           - umi
+          - cmi
+          - cas
     steps:
       - uses: actions/checkout@master
       - name: 1.准备环境
         run: |
-          free -m
+          sudo timedatectl set-timezone Asia/Shanghai
+          if [[ "$device" == "umi" ]]; then
+              echo "device=umi" >> $GITHUB_ENV
+          elif [[ "$device" == "cmi" ]]; then
+              echo "device=cmi" >> $GITHUB_ENV
+          elif [[ "$device" == "cas" ]]; then
+              echo "device=cas" >> $GITHUB_ENV
+          fi
+        env:
+          device: ${{ matrix.device }}
+  build:
+    needs: prepare_variables
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device:
+          - umi
+          - cmi
+          - cas
+    steps:
+      - name: 1.准备环境
+        run: |
+          echo ${{ env.device }}
