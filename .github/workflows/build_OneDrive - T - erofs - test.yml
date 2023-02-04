@@ -1,6 +1,10 @@
 name: build_OneDrive - T - erofs -test
 on:
   workflow_dispatch:
+    inputs:
+      URL:
+        description: "待操作的系统包下载地址"
+        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -8,30 +12,10 @@ jobs:
       matrix:
         device:
           - umi
-          - cmi
-          - cas
     steps:
       - uses: actions/checkout@master
       - name: 1.准备环境
         run: |
           sudo timedatectl set-timezone Asia/Shanghai
-          if [ -n "${{ github.event.inputs.custom_version }}" ]; then
-              echo "date=${{ github.event.inputs.custom_version }}" >> $GITHUB_ENV
-          else
-              echo "date=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f4)" >> $GITHUB_ENV
-          fi
-          echo "host=$(uname -n)" >> $GITHUB_ENV
-          if [[ "$device" == "umi" ]]; then
-              echo "device=umi" >> $GITHUB_ENV
-              echo "ORIGN_ZIP_NAME=miui_UMI_V13.0.8.0.SJBCNXM_ade3b2ea7f_12.0.zip" >> $GITHUB_ENV
-              echo "ORIGN_ZIP_NAME_VERSION=$(echo miui_UMI_V13.0.8.0.SJBCNXM_ade3b2ea7f_12.0.zip | cut -d"_" -f3)" >> $GITHUB_ENV
-          elif [[ "$device" == "cmi" ]]; then
-              echo "device=cmi" >> $GITHUB_ENV
-              echo "ORIGN_ZIP_NAME=miui_CMI_V13.0.6.0.SJACNXM_e6f6ed794a_12.0.zip" >> $GITHUB_ENV
-              echo "ORIGN_ZIP_NAME_VERSION=$(echo miui_UMI_V13.0.8.0.SJBCNXM_ade3b2ea7f_12.0.zip | cut -d"_" -f3)" >> $GITHUB_ENV
-          elif [[ "$device" == "cas" ]]; then
-              echo "device=cas" >> $GITHUB_ENV
-              echo "ORIGN_ZIP_NAME=miui_CASPRE_22.10.26_d432264f3a_12.0.zip" >> $GITHUB_ENV
-              echo "ORIGN_ZIP_NAME_VERSION=$(echo miui_CASPRE_22.10.26_d432264f3a_12.0.zip | cut -d"_" -f3)" >> $GITHUB_ENV
-          fi
-          echo $ORIGN_ZIP_NAME
+          sudo apt install aria2
+          aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" ${{ github.event.inputs.URL }}
