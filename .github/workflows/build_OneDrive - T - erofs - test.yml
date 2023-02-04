@@ -34,12 +34,12 @@ jobs:
           sudo systemctl start alist
       - name: 2.下载系统包
         run: |
-          aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" https://hugeota.d.miui.com/V13.0.7.0.SJBCNXM/miui_UMI_V13.0.7.0.SJBCNXM_1beabe6d7f_12.0.zip
+          aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" https://onedrive.zjw.js.cn/UMI_Packages/miui_UMIPRE_22.9.29_87e182d4ca_12.0_2in1_Root.zip
       - name: 7.上传到123盘
         run: |
           free -m
           rclone mkdir 123pan:/UMI_Packages
-          rclone copy -P "$GITHUB_WORKSPACE"/miui_UMI_V13.0.7.0.SJBCNXM_1beabe6d7f_12.0.zip 123pan:/UMI_Packages --buffer-size=1024M
+          rclone copy -P "$GITHUB_WORKSPACE"/miui_UMIPRE_22.9.29_87e182d4ca_12.0_2in1_Root.zip 123pan:/UMI_Packages --buffer-size=1024M
       - name: 10.删除工作流运行
         uses: Mattraks/delete-workflow-runs@v2
         with:
