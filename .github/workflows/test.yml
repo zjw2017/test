@@ -1,0 +1,15 @@
+name: free_memory
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device:
+          - umi
+    steps:
+      - uses: actions/checkout@master
+      - name: 1.准备环境
+        run: |
+          free -m
