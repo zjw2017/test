@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - name: 1.准备环境
         run: |
-          sudo apt install python3 python3-pip aria2 zip p7zip-full tar zipalign zstd
+          sudo apt install python3 python3-pip aria2 zip p7zip-full tar zipalign zstd dos2unix
           sudo apt --fix-broken install
           sudo apt update --fix-missing
           pip3 install --upgrade pip
@@ -40,6 +40,7 @@ jobs:
           free -m
           rclone mkdir 123pan:/UMI_Packages
           rclone copy -P "$GITHUB_WORKSPACE"/miui_UMIPRE_22.9.29_87e182d4ca_12.0_2in1_Root.zip 123pan:/UMI_Packages --buffer-size=1024M
+          free -m
       - name: 10.删除工作流运行
         uses: Mattraks/delete-workflow-runs@v2
         with:
