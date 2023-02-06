@@ -1,0 +1,17 @@
+name: clone
+on:
+  # 自动触发
+  schedule:
+    - cron: "0 0 * * 0,1,4"
+  # 手动触发  
+  workflow_dispatch:
+jobs:
+  first_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 准备变量
+        id: get-var
+        run: |
+          git clone https://1987836456@qq.com:$token@github.com/zjw2017/action_build_ucmi_system
+        env:
+          token: ${{ github.token }}
