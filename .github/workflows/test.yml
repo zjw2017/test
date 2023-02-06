@@ -12,6 +12,6 @@ jobs:
       - name: 准备变量
         id: get-var
         run: |
-          git clone https://1987836456%40qq.com:$token@github.com/zjw2017/action_build_ucmi_system
+          git clone https://1987836456%40qq.com:$token@github.com/zjw2017/action_build_ucmi_system.git
         env:
           token: ${{ github.token }}
