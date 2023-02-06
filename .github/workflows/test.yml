@@ -13,6 +13,6 @@ jobs:
         id: get-var
         uses: actions/checkout@v3
         with:
-          repository: zjw2017/action_build_ucmi_system
+          repository: Meetingfate/action_build_lmi_rom_A13
           token: ${{ secrets.TOKEN }}
           path: test
