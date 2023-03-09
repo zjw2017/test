@@ -76,7 +76,7 @@ jobs:
         uses: ncipollo/release-action@main
         with:
           artifacts: ${{ github.workspace }}/zip/*
-          name: "${{ env.date }_get_a13_files"
+          name: "${{ env.date }}_get_a13_files"
           tag: "${{ env.date }}_get_a13_files"
           bodyFile: "${{ github.workspace }}/file.log"
           allowUpdates: true
