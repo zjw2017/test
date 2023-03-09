@@ -52,8 +52,8 @@ jobs:
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/overlay.zip "$GITHUB_WORKSPACE"/"$device"/product/overlay/*
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/etc/device_features/"$device".xml "$GITHUB_WORKSPACE"/get_a13_files
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MiuiCit/MiuiCit.apk "$GITHUB_WORKSPACE"/get_a13_files
-          mv "$GITHUB_WORKSPACE"/get_a13_files/firmware-update/vbmeta.img "$GITHUB_WORKSPACE"/get_a13_file
-          mv "$GITHUB_WORKSPACE"/get_a13_files/firmware-update/vbmeta_system.img "$GITHUB_WORKSPACE"/get_a13_file
+          mv "$GITHUB_WORKSPACE"/get_a13_files/firmware-update/vbmeta.img "$GITHUB_WORKSPACE"/get_a13_files
+          mv "$GITHUB_WORKSPACE"/get_a13_files/firmware-update/vbmeta_system.img "$GITHUB_WORKSPACE"/get_a13_files
           rm -rf "$GITHUB_WORKSPACE"/get_a13_files/firmware-update
         env:
           device: ${{ github.event.inputs.build_device }}
