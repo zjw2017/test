@@ -37,17 +37,9 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE"/get_a13_files
           ORIGIN_ZIP_NAME=miui_CAS_V14.0.0.4.TJJCNXM_40dcce95ed_13.0.zip
           7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -r -o"$GITHUB_WORKSPACE"/get_a13_files firmware-update/vbmeta.img
-          7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -r -o"$GITHUB_WORKSPACE"/get_a13_files firmware-update/vbmeta_system.img          
+          7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -r -o"$GITHUB_WORKSPACE"/get_a13_files firmware-update/vbmeta_system.img
           for i in product vendor; do
-              7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.transfer.list
-              7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.patch.dat
-              7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.new.dat.br
-              "$GITHUB_WORKSPACE"/tools/brotli -d "$GITHUB_WORKSPACE"/"$device"/$i.new.dat.br
-              rm -rf "$GITHUB_WORKSPACE"/"$device"/$i.new.dat.br
-              python3 "$GITHUB_WORKSPACE"/tools/sdat2img.py "$GITHUB_WORKSPACE"/"$device"/$i.transfer.list "$GITHUB_WORKSPACE"/"$device"/$i.new.dat "$GITHUB_WORKSPACE"/"$device"/$i.img
-              rm -rf "$GITHUB_WORKSPACE"/"$device"/$i.patch.dat
-              rm -rf "$GITHUB_WORKSPACE"/"$device"/$i.transfer.list
-              rm -rf "$GITHUB_WORKSPACE"/"$device"/$i.new.dat
+              7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.img
               sudo python3 "$GITHUB_WORKSPACE"/tools/imgextractorLinux.py "$GITHUB_WORKSPACE"/"$device"/$i.img "$GITHUB_WORKSPACE"/"$device"
               rm -rf "$GITHUB_WORKSPACE"/"$device"/$i.img
           done
