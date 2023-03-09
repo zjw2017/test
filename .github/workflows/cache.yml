@@ -47,7 +47,6 @@ jobs:
           echo test > $GITHUB_WORKSPACE/$device/test
         env:
           device: ${{ matrix.device }}
-      - if: ${{ steps.get-cache.outputs.cache-hit != 'true' }}
         # 使用upload-artifact在job之间互通文件
         uses: actions/upload-artifact@v3
         with:
