@@ -1,0 +1,85 @@
+name: 纯净版 - cas
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: "待操作的系统包下载地址"
+        required: true
+      custom_version:
+        description: "待打包的版本号"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        device:
+          - cas
+    steps:
+      - uses: actions/checkout@master
+      - name: 1.准备环境
+        run: |
+          sudo timedatectl set-timezone Asia/Shanghai
+          echo "origin_date=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f4)" >> $GITHUB_ENV
+          if [ -n "${{ github.event.inputs.custom_version }}" ]; then
+              echo "date=${{ github.event.inputs.custom_version }}" >> $GITHUB_ENV
+          else
+              echo "date=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f4)" >> $GITHUB_ENV
+          fi
+          echo "host=$(uname -n)" >> $GITHUB_ENV
+          if [[ "$device" == "umi" ]]; then
+              echo "device=umi" >> $GITHUB_ENV
+              echo "ORIGIN_ZIP_NAME=miui_UMI_V13.0.8.0.SJBCNXM_ade3b2ea7f_12.0.zip" >> $GITHUB_ENV
+          elif [[ "$device" == "cmi" ]]; then
+              echo "device=cmi" >> $GITHUB_ENV
+              echo "ORIGIN_ZIP_NAME=miui_CMI_V13.0.6.0.SJACNXM_e6f6ed794a_12.0.zip" >> $GITHUB_ENV
+          elif [[ "$device" == "cas" ]]; then
+              echo "device=cas" >> $GITHUB_ENV
+              echo "ORIGIN_ZIP_NAME=miui_CAS_V14.0.0.4.TJJCNXM_40dcce95ed_13.0.zip" >> $GITHUB_ENV
+          fi
+          sudo apt install python3 python3-pip aria2 zip p7zip-full tar zipalign zstd dos2unix
+          sudo apt --fix-broken install
+          sudo apt update --fix-missing
+          pip3 install --upgrade pip
+          pip3 install pycryptodome
+          pip3 install setuptools
+          pip3 install docopt
+          pip3 install requests
+          pip3 install beautifulsoup4
+          pip3 install --ignore-installed pyyaml
+          curl https://rclone.org/install.sh | sudo bash
+          mkdir -p ~/.config/rclone/
+          unzip -o -q -P ${{ secrets.PASSWORD }} "$GITHUB_WORKSPACE"/tools/rclone.zip -d ~/.config/rclone/
+          curl -fsSL "https://alist.nn.ci/v3.sh" | sudo bash -s install
+          sudo systemctl stop alist
+          sudo mv -f /home/runner/.config/rclone/data.db-shm /opt/alist/data
+          sudo mv -f /home/runner/.config/rclone/data.db-wal /opt/alist/data
+          sudo mv -f /home/runner/.config/rclone/data.db /opt/alist/data
+          sudo mv -f /home/runner/.config/rclone/config.json /opt/alist/data
+          sudo systemctl start alist
+        env:
+          device: ${{ matrix.device }}
+      - name: 3.下载系统包
+        run: |
+              aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" https://onedrive.zjw.js.cn/CAS_Packages/miui_CAS_V14.0.0.4.TJJCNXM_40dcce95ed_13.0.zip
+      - name: 4.解包
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE"/${{ env.device }}
+          ZIP_NAME_MUNCH=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
+          7z x "$GITHUB_WORKSPACE"/${{ env.ORIGIN_ZIP_NAME }} -r -o"$GITHUB_WORKSPACE"/${{ env.device }} firmware-update
+      - name: 5.替换相关文件
+        run: |
+          # 去除AVB2.0校验 By Meetingfate
+          sudo chmod 777 "$GITHUB_WORKSPACE"/tools/magiskboot
+          forbid_avb2.0() {
+              file="$1"
+              typeset -u jz
+              jz=$(od -w16 -An -tx1 "$file" | grep -i -B 2 '61 76 62 74 6f 6f 6c 20' | tr -d '[:space:]' | egrep -oi '0000000000000000000000..00000000617662746f6f6c20')
+              if "$GITHUB_WORKSPACE"/tools/magiskboot hexpatch "$file" $jz 00000000000000000000000300000000617662746F6F6C20 &>/dev/null; then
+                  echo >/dev/null
+              else
+                  echo "！失败"
+                  exit 1
+              fi
+          }
+          forbid_avb2.0 "$GITHUB_WORKSPACE"/${{ env.device }}/firmware-update/vbmeta.img
+          forbid_avb2.0 "$GITHUB_WORKSPACE"/${{ env.device }}/firmware-update/vbmeta_system.img
