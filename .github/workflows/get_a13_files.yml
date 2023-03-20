@@ -55,16 +55,16 @@ jobs:
           device: ${{ github.event.inputs.build_device }}
       - name: 4.提取指定文件
         run: |
-          mkdir -p "$GITHUB_WORKSPACE"/"$device"/system
-          mkdir -p "$GITHUB_WORKSPACE"/"$device"/vendor
-          mkdir -p "$GITHUB_WORKSPACE"/"$device"/system_ext
-          mkdir -p "$GITHUB_WORKSPACE"/"$device"/product
-          mkdir -p "$GITHUB_WORKSPACE"/"$device"/odm
-          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system/system/build.prop
-          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/vendor/build.prop
-          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system_ext/etc/build.prop
-          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/product/etc/build.prop
-          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/odm/etc/build.prop
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/system
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/vendor
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/system_ext
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/product
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/odm
+          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system/system/build.prop "$GITHUB_WORKSPACE"/get_a13_files/system
+          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/vendor/build.prop "$GITHUB_WORKSPACE"/get_a13_files/vendor
+          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system_ext/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/system_ext
+          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/product/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/product
+          sudo cp -f "$GITHUB_WORKSPACE"/"$device"/odm/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/odm
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/selinux.zip "$GITHUB_WORKSPACE"/"$device"/vendor/etc/selinux
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/overlay.zip "$GITHUB_WORKSPACE"/"$device"/product/overlay/*
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/etc/device_features/"$device".xml "$GITHUB_WORKSPACE"/get_a13_files
