@@ -38,10 +38,11 @@ jobs:
           ORIGIN_ZIP_NAME=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
           md5sum "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME"
           for i in system odm system_ext product vendor mi_ext; do
-              if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]] && [[ $i == mi_ext ]]; then
-                  break
-              else
-                 touch "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
+              if [[ $i == mi_ext ]]; then
+                  if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]]; then
+                      break
+                  else
+                      touch "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
               fi
               7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.transfer.list
               7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.patch.dat
