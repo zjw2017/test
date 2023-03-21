@@ -27,8 +27,7 @@ jobs:
   log-the-inputs:
     runs-on: ubuntu-latest
     steps:
-      - if: ${{ inputs.pan123 == 'true' }}
-        name: test
+      - name: test
         run: |
           echo "Log level: $LEVEL"
           echo "pan123: $pan123"
