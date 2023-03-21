@@ -27,10 +27,25 @@ jobs:
   log-the-inputs:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - if: ${{ inputs.pan123 == 'true' }}
+        run: |
           echo "Log level: $LEVEL"
           echo "pan123: $pan123"
+        env:
+          LEVEL: ${{ inputs.logLevel }}
+          pan123: ${{ inputs.pan123 }}
+          OneDrive: ${{ inputs.OneDrive }}
+          GithubRelease: ${{ inputs.GithubRelease }}
+      - if: ${{ inputs.OneDrive == 'true' }}
+        run: |
           echo "OneDrive: $OneDrive"
+        env:
+          LEVEL: ${{ inputs.logLevel }}
+          pan123: ${{ inputs.pan123 }}
+          OneDrive: ${{ inputs.OneDrive }}
+          GithubRelease: ${{ inputs.GithubRelease }}
+      - if: ${{ inputs.GithubRelease == 'true' }}
+        run: |
           echo "GithubRelease: $GithubRelease"
         env:
           LEVEL: ${{ inputs.logLevel }}
