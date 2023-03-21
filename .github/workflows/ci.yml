@@ -11,7 +11,7 @@ on:
         - info
         - warning
         - debug
-      123pan:
+      pan123:
         description: '123盘'
         required: true
         type: boolean
@@ -19,7 +19,7 @@ on:
         description: 'OneDrive'
         required: true
         type: boolean
-     GithubRelease:
+      GithubRelease:
         description: 'Github Release'
         required: true
         type: boolean
@@ -33,13 +33,13 @@ jobs:
     steps:
       - run: |
           echo "Log level: $LEVEL"
-          echo "123pan: $123pan"
+          echo "pan123: $pan123"
           echo "OneDrive: $OneDrive"
           echo "GithubRelease: $GithubRelease"
           echo "Environment: $ENVIRONMENT"
         env:
           LEVEL: ${{ inputs.logLevel }}
-          123pan: ${{ inputs.123pan }}
+          pan123: ${{ inputs.pan123 }}
           OneDrive: ${{ inputs.OneDrive }}
           GithubRelease: ${{ inputs.GithubRelease }}
           ENVIRONMENT: ${{ inputs.environment }}
