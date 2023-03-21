@@ -28,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - if: ${{ inputs.pan123 == 'true' }}
+        name: test
         run: |
           echo "Log level: $LEVEL"
           echo "pan123: $pan123"
