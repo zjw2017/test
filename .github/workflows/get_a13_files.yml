@@ -72,10 +72,16 @@ jobs:
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system_ext/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/system_ext
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/product/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/product
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/odm/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/odm
+          if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]]; then
+              mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
+              mi_ext_build_prop=$(sudo find "$GITHUB_WORKSPACE"/images/mi_ext -name "build.prop")
+              sudo cp -f "$mi_ext_build_prop" "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
+          fi
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/selinux.zip "$GITHUB_WORKSPACE"/"$device"/vendor/etc/selinux
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/overlay.zip "$GITHUB_WORKSPACE"/"$device"/product/overlay/*
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/etc/device_features/"$device".xml "$GITHUB_WORKSPACE"/get_a13_files
-          sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MiuiCit/MiuiCit.apk "$GITHUB_WORKSPACE"/get_a13_files || true
+          sudo ls -l "$GITHUB_WORKSPACE"/"$device"/product/app/
+          sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MiuiCit/MiuiCit.apk "$GITHUB_WORKSPACE"/get_a13_files
         env:
           device: ${{ github.event.inputs.build_device }}
       - name: 5.打包
