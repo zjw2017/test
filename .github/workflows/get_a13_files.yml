@@ -42,7 +42,7 @@ jobs:
                   if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]]; then
                       break
                   else
-                      touch "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
+                      touch "$GITHUB_WORKSPACE"/get_a13_files/has_mi_ext
                   fi
               fi
               7z x "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME" -o"$GITHUB_WORKSPACE"/"$device" $i.transfer.list
