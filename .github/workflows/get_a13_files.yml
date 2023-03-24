@@ -74,7 +74,7 @@ jobs:
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/odm/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/odm
           if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]]; then
               mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
-              mi_ext_build_prop=$(sudo find "$GITHUB_WORKSPACE"/images/mi_ext -name "build.prop")
+              mi_ext_build_prop=$(sudo find "$GITHUB_WORKSPACE"/"$device"/mi_ext -name "build.prop")
               sudo cp -f "$mi_ext_build_prop" "$GITHUB_WORKSPACE"/get_a13_files/mi_ext
           fi
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/selinux.zip "$GITHUB_WORKSPACE"/"$device"/vendor/etc/selinux
