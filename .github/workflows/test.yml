@@ -25,7 +25,5 @@ jobs:
       - name: 1.准备环境
         run: |
           echo "$pack_version"
-          echo "$pack_type"
         env:
           pack_verison: ${{ inputs.pack_version }}
-          pack_type: ${{ inputs.pack_type }}
