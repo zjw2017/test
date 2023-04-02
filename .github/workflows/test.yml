@@ -1,18 +1,29 @@
-name: clone
+name: 纯净版 - 融合版
 on:
-  # 自动触发
-  schedule:
-    - cron: "0 0 * * 0,1,4"
-  # 手动触发  
   workflow_dispatch:
+    inputs:
+      pack_version:
+        description: '待打包的类型'
+        required: true
+        default: 'premium'
+        type: choice
+        options:
+        - premium
+        - free
+      pack_type:
+        description: '待打包的系统分区格式和上传方式'
+        required: true
+        default: 'erofs'
+        type: choice
+        options:
+        - erofs
+        - ext4
 jobs:
-  first_job:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: 准备变量
-        id: get-var
-        uses: actions/checkout@v3
-        with:
-          repository: zjw2017/action_build_ucmi_system
-          token: ${{ secrets.TOKEN }}
-          path: test
+      - name: 1.准备环境
+        run: |
+          echo "$pack_version"
+        env:
+          pack_verison: ${{ inputs.pack_version }}
