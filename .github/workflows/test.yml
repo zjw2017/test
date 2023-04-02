@@ -13,11 +13,11 @@ on:
       pack_type:
         description: '待打包的系统分区格式和上传方式'
         required: true
-        default: 'erofs'
+        default: 'premium'
         type: choice
         options:
-        - erofs
-        - ext4
+        - premium
+        - free
 jobs:
   build:
     runs-on: ubuntu-latest
