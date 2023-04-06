@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
     inputs:
       URL:
-        description: "待操作的系统包下载地址"
+        description: "https://bigota.d.miui.com/V14.0.1.0.TJJCNXM/miui_CAS_V14.0.1.0.TJJCNXM_8ff78bbc57_13.0.zip"
         required: true
       build_device:
-        description: "底包机型代号"
+        description: "cas"
         required: true
 jobs:
   build:
