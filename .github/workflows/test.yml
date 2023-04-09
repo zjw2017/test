@@ -13,10 +13,10 @@ jobs:
         id: get-var
         uses: actions/checkout@v3
         with:
-          repository: zjw2017/action_build_ucmi_system
+          repository: zjw2017/test
           token: ${{ secrets.TOKEN }}
           path: test
       - name: test
         run: |
-          RANDOMSEED=$(tr -dc 'a-f0-9' < /dev/urandom | head -c 16)
+          RANDOMSEED=$(tr -dc 'a-f0-9' < /dev/urandom | head -c 16 2>/dev/null)
           echo "RANDOMSEED=0x$RANDOMSEED"
