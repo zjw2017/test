@@ -16,3 +16,6 @@ jobs:
           repository: zjw2017/action_build_ucmi_system
           token: ${{ secrets.TOKEN }}
           path: test
+      - name: test
+        run: |
+          tr -dc 'a-f0-9' < /dev/urandom | head -c 16
