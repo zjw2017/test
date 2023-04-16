@@ -62,8 +62,8 @@ jobs:
           device: ${{ github.event.inputs.build_device }}
       - name: 4.提取指定文件
         run: |
-          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/product
-          sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MIUISystemUIPlugin/MIUISystemUIPlugin.apk "$GITHUB_WORKSPACE"/get_a13_files
+          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/vendor
+          sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/vendor/etc "$GITHUB_WORKSPACE"/get_a13_files
         env:
           device: ${{ github.event.inputs.build_device }}
       - name: 5.打包
