@@ -37,7 +37,7 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE"/get_a13_files
           ORIGIN_ZIP_NAME=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
           md5sum "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME"
-          for i in product; do
+          for i in vendor; do
               if [[ $i == mi_ext ]]; then
                   if [[ "$(7z l "$ORIGIN_ZIP_NAME" | grep mi_ext)" == "" ]]; then
                       break
