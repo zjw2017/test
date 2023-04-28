@@ -66,6 +66,7 @@ jobs:
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/vendor/etc/audio_effects.xml "$GITHUB_WORKSPACE"/get_a13_files
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/vendor/etc/audio_io_policy.conf "$GITHUB_WORKSPACE"/get_a13_files
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/vendor/etc/audio_policy_configuration.xml "$GITHUB_WORKSPACE"/get_a13_files
+          sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/overlay/MiuiFrameworkResOverlay.apk "$GITHUB_WORKSPACE"/get_a13_files
         env:
           device: ${{ github.event.inputs.build_device }}
       - name: 5.打包
