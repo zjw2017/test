@@ -117,6 +117,7 @@ jobs:
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/selinux.zip "$GITHUB_WORKSPACE"/"$device"/vendor/etc/selinux
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/etc.zip "$GITHUB_WORKSPACE"/"$device"/vendor/etc/
           sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/overlay.zip "$GITHUB_WORKSPACE"/"$device"/product/overlay/*
+          sudo 7z a "$GITHUB_WORKSPACE"/get_a13_files/pangu.zip "$GITHUB_WORKSPACE"/"$device"/product/pangu/
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/etc/device_features/"$device".xml "$GITHUB_WORKSPACE"/get_a13_files
           sudo ls -l "$GITHUB_WORKSPACE"/"$device"/product/app/
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MiuiCit/MiuiCit.apk "$GITHUB_WORKSPACE"/get_a13_files
