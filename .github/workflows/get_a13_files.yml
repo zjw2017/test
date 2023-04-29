@@ -64,8 +64,7 @@ jobs:
           done
           "$GITHUB_WORKSPACE"/tools/payload-dumper-go -o "$GITHUB_WORKSPACE"/images/ -p modem "$GITHUB_WORKSPACE"/MUNCH/payload.bin
           sudo mv -f "$GITHUB_WORKSPACE"/images/* "$GITHUB_WORKSPACE"/"$device"
-          rm -rf "$GITHUB_WORKSPACE"/MUNCH
-          rm -rf "$GITHUB_WORKSPACE"/${{ env.ORIGIN_ZIP_NAME }}
+          sudo rm -rf "$GITHUB_WORKSPACE"/MUNCH
         env:
           device: ${{ github.event.inputs.build_device }}
       - if: ${{ env.unpack == 'br' }}
