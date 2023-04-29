@@ -51,7 +51,7 @@ jobs:
           ORIGIN_ZIP_NAME=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
           md5sum "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME"
           
-          for i in vendor system product system_ext mi_ext; do
+          for i in vendor odm system product system_ext mi_ext; do
               "$GITHUB_WORKSPACE"/tools/payload-dumper-go -o "$GITHUB_WORKSPACE"/images/ -p $i "$GITHUB_WORKSPACE"/MUNCH/payload.bin
               if [[ $("$GITHUB_WORKSPACE"/tools/gettype -i "$GITHUB_WORKSPACE"/images/$i.img) == "ext" ]]; then
                   sudo python3 "$GITHUB_WORKSPACE"/tools/imgextractorLinux.py "$GITHUB_WORKSPACE"/images/$i.img "$GITHUB_WORKSPACE"/images
