@@ -63,7 +63,7 @@ jobs:
               rm -rf "$GITHUB_WORKSPACE"/images/$i.img
           done
           "$GITHUB_WORKSPACE"/tools/payload-dumper-go -o "$GITHUB_WORKSPACE"/images/ -p modem "$GITHUB_WORKSPACE"/MUNCH/payload.bin
-          mv -f "$GITHUB_WORKSPACE"/images/* "$GITHUB_WORKSPACE"/"$device"
+          sudo mv -f "$GITHUB_WORKSPACE"/images/* "$GITHUB_WORKSPACE"/"$device"
           rm -rf "$GITHUB_WORKSPACE"/MUNCH
           rm -rf "$GITHUB_WORKSPACE"/${{ env.ORIGIN_ZIP_NAME }}
         env:
