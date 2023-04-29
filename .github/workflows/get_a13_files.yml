@@ -33,7 +33,7 @@ jobs:
         run: |
           ZIP_NAME=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
           7z x "$GITHUB_WORKSPACE"/$ZIP_NAME -r -o"$GITHUB_WORKSPACE"/MUNCH
-          if [ -n "$GITHUB_WORKSPACE"/MUNCH/payload.bin ]; then
+          if [ -e "$GITHUB_WORKSPACE"/MUNCH/payload.bin ]; then
               echo "unpack=payload" >> $GITHUB_ENV
           else
               echo "unpack=br" >> $GITHUB_ENV
@@ -101,11 +101,9 @@ jobs:
           device: ${{ github.event.inputs.build_device }}
       - name: 5.提取指定文件
         run: |
-          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/system
-          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/vendor
-          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/system_ext
-          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/product
-          mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/odm
+          for i in system odm system_ext product vendor mi_ext; do
+            mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/$i
+          done
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system/system/build.prop "$GITHUB_WORKSPACE"/get_a13_files/system
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/vendor/build.prop "$GITHUB_WORKSPACE"/get_a13_files/vendor
           sudo cp -f "$GITHUB_WORKSPACE"/"$device"/system_ext/etc/build.prop "$GITHUB_WORKSPACE"/get_a13_files/system_ext
