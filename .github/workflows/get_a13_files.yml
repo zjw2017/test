@@ -39,7 +39,7 @@ jobs:
               echo "unpack=br" >> $GITHUB_ENV
           fi
       - if: ${{ env.unpack == 'payload' }}
-        name: 3.解压payload
+        name: 4/PL.解压payload
         run: |
           sudo chmod 777 "$GITHUB_WORKSPACE"/tools/payload-dumper-go
           sudo chmod 777 "$GITHUB_WORKSPACE"/tools/brotli
@@ -51,7 +51,7 @@ jobs:
           ORIGIN_ZIP_NAME=$(echo ${{ github.event.inputs.URL }} | cut -d"/" -f5)
           md5sum "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME"
           
-          for i in system product system_ext mi_ext; do
+          for i in vendor system product system_ext mi_ext; do
               "$GITHUB_WORKSPACE"/tools/payload-dumper-go -o "$GITHUB_WORKSPACE"/images/ -p $i "$GITHUB_WORKSPACE"/MUNCH/payload.bin
               if [[ $("$GITHUB_WORKSPACE"/tools/gettype -i "$GITHUB_WORKSPACE"/images/$i.img) == "ext" ]]; then
                   sudo python3 "$GITHUB_WORKSPACE"/tools/imgextractorLinux.py "$GITHUB_WORKSPACE"/images/$i.img "$GITHUB_WORKSPACE"/images
@@ -68,7 +68,7 @@ jobs:
         env:
           device: ${{ github.event.inputs.build_device }}
       - if: ${{ env.unpack == 'br' }}
-        name: 3.解压br
+        name: 4/BR.解压br
         run: |
           sudo chmod 777 "$GITHUB_WORKSPACE"/tools/brotli
           mkdir -p "$GITHUB_WORKSPACE"/"$device"
@@ -99,7 +99,7 @@ jobs:
           rm -rf "$GITHUB_WORKSPACE"/"$ORIGIN_ZIP_NAME"
         env:
           device: ${{ github.event.inputs.build_device }}
-      - name: 4.提取指定文件
+      - name: 5.提取指定文件
         run: |
           mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/system
           mkdir -p "$GITHUB_WORKSPACE"/get_a13_files/vendor
@@ -124,7 +124,7 @@ jobs:
           sudo cp -rf "$GITHUB_WORKSPACE"/"$device"/product/app/MiuiCit/MiuiCit.apk "$GITHUB_WORKSPACE"/get_a13_files
         env:
           device: ${{ github.event.inputs.build_device }}
-      - name: 5.打包
+      - name: 6.打包
         run: |
           mkdir -p "$GITHUB_WORKSPACE"/zip
           sudo chmod -R 777 "$GITHUB_WORKSPACE"/get_a13_files
@@ -135,7 +135,7 @@ jobs:
           echo ""$device"_"${{ env.date }}".zip" > file.log
         env:
           device: ${{ github.event.inputs.build_device }}
-      - name: 6.上传到Github Release
+      - name: 7.上传到Github Release
         uses: ncipollo/release-action@main
         with:
           artifacts: ${{ github.workspace }}/zip/*
@@ -145,7 +145,7 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: 7.删除工作流运行
+      - name: 8.删除工作流运行
         uses: Mattraks/delete-workflow-runs@v2
         with:
           token: ${{ github.token }}
