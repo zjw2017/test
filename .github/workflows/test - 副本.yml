@@ -1,0 +1,32 @@
+name: test-push
+on:
+  # 手动触发  
+  workflow_dispatch:
+jobs:
+  first_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 准备变量
+        id: get-var
+        uses: actions/checkout@v3
+        with:
+          repository: zjw2017/test
+          token: ${{ secrets.TOKEN }}
+          path: test
+      - name: test
+        run: |
+          RANDOMSEED=$(tr -dc 'a-f0-9' < /dev/urandom | head -c 16 >/dev/null 2>&1 )
+          echo "RANDOMSEED=0x$RANDOMSEED"
+          git config --global user.email "30484319+zjw2017@users.noreply.github.com"
+          git config --global user.name "柚稚的孩纸"
+          git add ./tools/brotli
+          if git commit -m "test"; then
+              echo "push=true" >> $GITHUB_ENV
+          else
+              echo "push=false" >> $GITHUB_ENV
+          fi
+      - if: ${{ env.push == 'true' }}
+        name: 6. 推送到Magisk Module仓库
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.ref }}
