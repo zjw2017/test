@@ -1,5 +1,8 @@
 name: clone
 on:
+  push:
+    branches:
+      - master
   # 自动触发
   schedule:
     - cron: "0 0 * * 0,1,4"
