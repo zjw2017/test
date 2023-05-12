@@ -23,4 +23,3 @@ jobs:
         run: |
           RANDOMSEED=$(tr -dc 'a-f0-9' < /dev/urandom | head -c 16 >/dev/null 2>&1 )
           echo "RANDOMSEED=0x$RANDOMSEED"
-          echo test
