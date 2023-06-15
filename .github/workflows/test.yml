@@ -19,7 +19,28 @@ jobs:
           repository: zjw2017/test
           token: ${{ secrets.TOKEN }}
           path: test
-      - name: test
+      - name: Space Check
         run: |
-          df -h
+             df -hl
+             free -h
+      - name: Remove useless package
+        run: |
+          docker rmi `docker images -q`
+          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/sudo apt/sources.list.d
+          sudo apt -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+          sudo apt -y autoremove --purge
+          sudo apt -y autoclean
+          sudo apt clean
+      - name: Maximize and mount build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 1024
+          swap-size-mb: 6144
+          remove-dotnet: 'true'
+          temp-reserve-mb: 1024
+          remove-android: 'true'
+          remove-haskell: 'true'
+      - name: Space Check
+        run: |
+          df -hl
           free -h
