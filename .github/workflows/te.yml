@@ -8,3 +8,4 @@ jobs:
       - name: Check Support FileSystems
         run: |
           cat /proc/filesystems
+          uname -r
