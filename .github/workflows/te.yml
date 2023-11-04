@@ -10,7 +10,7 @@ jobs:
           echo "zjw=20030721" >> $GITHUB_ENV
       - name: Test Github_ENV
         run: |
-          echo "$zjw" >> $GITHUB_ENV
+          echo "$zjw"
       - name: Test Github_ENV Again
         run: |
-          echo "${{ env.zjw }}" >> $GITHUB_ENV
+          echo "${{ env.zjw }}"
