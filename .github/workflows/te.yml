@@ -14,3 +14,8 @@ jobs:
       - name: Test Github_ENV Again
         run: |
           echo "${{ env.zjw }}"
+      - name: Test Github_ENV Third
+        run: |
+          echo "$zjw2"
+        env:
+          zjw2: ${{ env.zjw }}
