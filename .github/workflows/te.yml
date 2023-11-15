@@ -7,5 +7,4 @@ jobs:
     steps:
       - name: Write Github_ENV
         run: |
-          RANDOMSEED=$(tr -dc 'a-f0-9' < /dev/urandom | head -c 16)
-          echo "RANDOMSEED=0x$RANDOMSEED"
+          bash $GITHUB_WORKSPACE/test.sh
