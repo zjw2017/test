@@ -8,4 +8,4 @@ jobs:
       - uses: actions/checkout@master
       - name: Write Github_ENV
         run: |
-          sudo bash $GITHUB_WORKSPACE/tools/install.sh
+          sudo bash $GITHUB_WORKSPACE/tools/install.sh $GITHUB_WORKSPACE
