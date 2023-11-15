@@ -8,5 +8,5 @@ jobs:
       - uses: actions/checkout@master
       - name: Write Github_ENV
         run: |
-          ls -l
-          bash $GITHUB_WORKSPACE/test.sh
+          bash $GITHUB_WORKSPACE/tools/install.sh
+          
