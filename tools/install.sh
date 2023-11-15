@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+GITHUB_WORKSPACE="$1"
+
 set -e
 
 #create tmp directory
