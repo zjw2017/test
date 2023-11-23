@@ -14,7 +14,7 @@ jobs:
       - name: 上传到Github Release
         uses: ncipollo/release-action@main
         with:
-          repo: zjw2017/action_build_ucmi_system
+          repo: zjw2017/test
           artifacts: $GITHUB_WORKSPACE/123.txt
           name: "test"
           tag: "test"
