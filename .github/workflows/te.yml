@@ -20,4 +20,4 @@ jobs:
           bodyFile: "$GITHUB_WORKSPACE/123.txt"
           allowUpdates: true
           artifactErrorsFailBuild: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
