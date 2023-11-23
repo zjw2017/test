@@ -8,4 +8,15 @@ jobs:
       - uses: actions/checkout@master
       - name: Write Github_ENV
         run: |
-          sudo bash $GITHUB_WORKSPACE/tools/install.sh $GITHUB_WORKSPACE
+          touch 123.txt
+          echo "111111111111111111111111111111111" > 123.txt
+      - name: 上传到Github Release
+        uses: ncipollo/release-action@main
+        with:
+          repo: "zjw2017/action_build_ucmi_system"
+          artifacts: ${{ github.workspace }}/123.txt
+          name: "test"
+          tag: "test"
+          bodyFile: "${{ github.workspace }}/123.txt"
+          allowUpdates: true
+          artifactErrorsFailBuild: true
