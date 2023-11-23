@@ -14,9 +14,10 @@ jobs:
         uses: ncipollo/release-action@main
         with:
           repo: "zjw2017/action_build_ucmi_system"
-          artifacts: ${{ github.workspace }}/123.txt
+          artifacts: $GITHUB_WORKSPACE/123.txt
           name: "test"
           tag: "test"
-          bodyFile: "${{ github.workspace }}/123.txt"
+          bodyFile: "$GITHUB_WORKSPACE/123.txt"
           allowUpdates: true
           artifactErrorsFailBuild: true
+          token: ${{ secrets.GITHUB_TOKEN }}
