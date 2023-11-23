@@ -9,6 +9,7 @@ jobs:
       - name: Write Github_ENV
         run: |
           touch 123.txt
+          echo "Current Repository: $GITHUB_REPOSITORY"
           echo "111111111111111111111111111111111" > 123.txt
       - name: 上传到Github Release
         uses: ncipollo/release-action@main
