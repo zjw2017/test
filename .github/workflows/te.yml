@@ -10,4 +10,4 @@ jobs:
         run: |
           pip3 install pycryptodome
           pip3 install requests
-          python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device OS1.0.3.0.UMACNXM 14
+          python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.UMACNXM 13
