@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import base64, json, re, requests, os, argparse, binascii, hashlib, getpass, sys
+import base64
+import json
+import re
+import requests
+import os
+import argparse
+import binascii
+import hashlib
+import getpass
+import sys
 
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
@@ -147,7 +156,8 @@ def choose(name, interface):
     else:
         result = f"\ndevice: {rom_device}\nversion: {rom_version}\nbigversion: {rom_bigversion}\ncodebase: Android {rom_codebase}\nbranch: {rom_branch}\ninterface: {interface_version}\n\nfilename: {rom_filename}\nfilesize: {rom_filesize}\ndownload: https://bigota.d.miui.com/{rom_version}/{rom_filename}\nchangelog:\n{rom_changelog}\n"
 
-    print(result)
+    print("https://ultimateota.d.miui.com" + "/" +
+          rom_version + "/" + latset_rom_filename)
 
 
 # 获取 Cookie
@@ -177,7 +187,8 @@ def login():
         "_locale": "zh_CN",
     }
     response2 = (
-        requests.post(url=url3, data=data).text.lstrip("&").lstrip("START").lstrip("&")
+        requests.post(url=url3, data=data).text.lstrip(
+            "&").lstrip("START").lstrip("&")
     )
     Auth = json.loads(response2)
     if Auth["description"] != "成功":
@@ -189,17 +200,21 @@ def login():
     ssecurity = Auth["ssecurity"]
     userId = Auth["userId"]
     sha1.update(
-        ("nonce=" + str(Auth["nonce"]) + "&" + Auth["ssecurity"]).encode("utf-8")
+        ("nonce=" + str(Auth["nonce"]) + "&" +
+         Auth["ssecurity"]).encode("utf-8")
     )
     clientSign = (
         base64.encodebytes(binascii.a2b_hex(sha1.hexdigest().encode("utf-8")))
         .decode(encoding="utf-8")
         .strip()
     )
-    nurl = Auth["location"] + "&_userIdNeedEncrypt=true&clientSign=" + clientSign
-    cookies_dict = requests.utils.dict_from_cookiejar(requests.get(url=nurl).cookies)
+    nurl = Auth["location"] + \
+        "&_userIdNeedEncrypt=true&clientSign=" + clientSign
+    cookies_dict = requests.utils.dict_from_cookiejar(
+        requests.get(url=nurl).cookies)
     serviceToken = cookies_dict["serviceToken"]
-    data = {"userId": userId, "ssecurity": ssecurity, "serviceToken": serviceToken}
+    data = {"userId": userId, "ssecurity": ssecurity,
+            "serviceToken": serviceToken}
     json_data = json.dumps(data, ensure_ascii=False, indent=4)
     with open("cookies.json", "w", encoding="utf-8") as file:
         file.write(json_data)
@@ -227,7 +242,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-## 输出 ROM 信息
+# 输出 ROM 信息
 def rom_info(codename, rom_version, android_version, verbose):
     userId = ""
     serviceToken = ""
@@ -245,7 +260,8 @@ def rom_info(codename, rom_version, android_version, verbose):
         interface = "2"
     post_data = {"q": encrypted_text, "t": serviceToken, "s": interface}
     requested_encrypted_text = request(post_data)
-    requested_decrypted_text = miui_decrypt(requested_encrypted_text, securityKey)
+    requested_decrypted_text = miui_decrypt(
+        requested_encrypted_text, securityKey)
     if verbose == True:
         print(requested_decrypted_text)
     else:
@@ -258,7 +274,8 @@ def main():
     if args.login:
         login()
     elif args.codename and args.rom_version and args.android_version:
-        rom_info(args.codename, args.rom_version, args.android_version, args.verbose)
+        rom_info(args.codename, args.rom_version,
+                 args.android_version, args.verbose)
     else:
         print("请输入正确的参数，使用 -h 查看帮助")
         sys.exit()
