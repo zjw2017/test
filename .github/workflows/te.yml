@@ -8,5 +8,5 @@ jobs:
       - uses: actions/checkout@master
       - name: Write Github_ENV
         run: |
-          pip3 pycryptodome
-          pip3 requests
+          pip3 install pycryptodome
+          pip3 install requests
