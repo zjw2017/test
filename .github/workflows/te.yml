@@ -1,6 +1,9 @@
 name: test
 on:
   workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
 jobs:
   setup-matrix:
     runs-on: ubuntu-latest
