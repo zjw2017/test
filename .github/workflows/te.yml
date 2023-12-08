@@ -11,4 +11,4 @@ jobs:
           pip3 install pycryptodome
           pip3 install requests
           device=ishtar
-          python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.UMACNXM 13
+          python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13
