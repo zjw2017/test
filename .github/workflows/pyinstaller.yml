@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # pip install --upgrade -r requirements.txt 
+        pip install --upgrade -r requirements.txt 
         pip install pyinstaller
     - name: Create binary
       run: |
