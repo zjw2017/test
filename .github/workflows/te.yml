@@ -3,15 +3,34 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
-
 jobs:
-  setup-matrix:
+  pre-get:
+    name: Pre-Build Task
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Write Github_ENV
+      - name: Check out code
+        uses: actions/checkout@main
+      - name: Generate URL
         run: |
           pip3 install pycryptodome
           pip3 install requests
           device=ishtar
-          python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13
+          echo "$(python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13)" > URL.txt  # 在这里执行前置任务，并将内容写入 URL.txt 文件
+  get-URL:
+    name: Get URL
+    runs-on: ubuntu-latest
+    needs: pre-get  # 设定该任务依赖于前置任务
+    strategy:
+      matrix:
+        device_type: ["umi", "cmi", "cas", "apollo"]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Read URL.txt
+        run: |
+          echo "URL: $(cat URL.txt)"
+      - name: Compile Devices
+        run: |
+          echo "Compiling for device $DEVICE_TYPE using URL.txt: $(cat URL.txt)"
+        env:
+          DEVICE_TYPE: ${{ matrix.device_type }}
