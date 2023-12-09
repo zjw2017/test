@@ -15,7 +15,7 @@ jobs:
         with:
           sparse-checkout: |
             ext4.py
-            tools/python/fspatch.py
+            tools/python/XiaomiUpdateInfo.py
           sparse-checkout-cone-mode: false
       - name: Generate URL
         id: generate_url
@@ -24,7 +24,7 @@ jobs:
           pip3 install pycryptodome
           pip3 install requests
           device=ishtar
-          echo "URL=$(python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13)" >> "$GITHUB_OUTPUT"
+          echo "URL=$(python3 "$GITHUB_WORKSPACE"/tools/python/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13)" >> "$GITHUB_OUTPUT"
   get-URL:
     name: Get URL
     runs-on: ubuntu-latest
