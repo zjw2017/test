@@ -7,21 +7,17 @@ jobs:
   pre-get:
     name: Pre-Build Task
     runs-on: ubuntu-latest
+    outputs: ${{ steps.generate_url.outputs.URL }}
     steps:
       - name: Check out code
         uses: actions/checkout@main
       - name: Generate URL
+        id: generate_url
         run: |
           pip3 install pycryptodome
           pip3 install requests
           device=ishtar
-          echo "$(python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13)" > URL.txt  # 在这里执行前置任务，并将内容写入 URL.txt 文件
-      - name: Upload URL Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: URL
-          path: URL.txt  # 上传文本文件为 artifact
-
+          echo "URL=$(python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13)" >> "$GITHUB_OUTPUT"
   get-URL:
     name: Get URL
     runs-on: ubuntu-latest
@@ -32,15 +28,15 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@main
-      - name: Download URL Artifact
-        uses: actions/download-artifact@main
-        with:
-          name: URL
       - name: Read URL.txt
         run: |
           echo "URL: $(cat URL.txt)"
+        env: 
+          URL: ${{needs.pre-get.outputs.URL}}
       - name: Compile Devices
         run: |
           echo "Compiling for device $DEVICE_TYPE using URL.txt: $(cat URL.txt)"
         env:
           DEVICE_TYPE: ${{ matrix.device_type }}
+          URL: ${{needs.pre-get.outputs.URL}}
+
