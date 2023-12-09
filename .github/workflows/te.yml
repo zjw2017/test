@@ -7,7 +7,8 @@ jobs:
   pre-get:
     name: Pre-Build Task
     runs-on: ubuntu-latest
-    outputs: ${{ steps.generate_url.outputs.URL }}
+    outputs: 
+      URL: ${{ steps.generate_url.outputs.URL }}
     steps:
       - name: Check out code
         uses: actions/checkout@main
