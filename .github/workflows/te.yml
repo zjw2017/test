@@ -16,16 +16,26 @@ jobs:
           pip3 install requests
           device=ishtar
           echo "$(python3 "$GITHUB_WORKSPACE"/XiaomiUpdateInfo.py $device V14.0.20.0.TMACNXM 13)" > URL.txt  # 在这里执行前置任务，并将内容写入 URL.txt 文件
+      - name: Upload URL Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: URL
+          path: URL.txt  # 上传文本文件为 artifact
+
   get-URL:
     name: Get URL
     runs-on: ubuntu-latest
-    needs: pre-get  # 设定该任务依赖于前置任务
+    needs: pre-get
     strategy:
       matrix:
         device_type: ["umi", "cmi", "cas", "apollo"]
     steps:
       - name: Check out code
         uses: actions/checkout@main
+      - name: Download URL Artifact
+        uses: actions/download-artifact@main
+        with:
+          name: URL
       - name: Read URL.txt
         run: |
           echo "URL: $(cat URL.txt)"
