@@ -12,9 +12,15 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@main
+        with:
+          sparse-checkout: |
+            ext4.py
+            tools/python/fspatch.py
+          sparse-checkout-cone-mode: false
       - name: Generate URL
         id: generate_url
         run: |
+          ls -l
           pip3 install pycryptodome
           pip3 install requests
           device=ishtar
