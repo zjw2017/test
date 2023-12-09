@@ -25,7 +25,7 @@ jobs:
         device_type: ["umi", "cmi", "cas", "apollo"]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
       - name: Read URL.txt
         run: |
           echo "URL: $(cat URL.txt)"
