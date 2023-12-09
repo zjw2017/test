@@ -31,13 +31,13 @@ jobs:
         uses: actions/checkout@main
       - name: Read URL.txt
         run: |
-          echo "URL: $(cat URL.txt)"
+          echo "URL: $URL"
         env: 
-          URL: ${{needs.pre-get.outputs.URL}}
+          URL: ${{ needs.pre-get.outputs.URL }}
       - name: Compile Devices
         run: |
-          echo "Compiling for device $DEVICE_TYPE using URL.txt: $(cat URL.txt)"
+          echo "Compiling for device $DEVICE_TYPE using URL.txt: $URL"
         env:
           DEVICE_TYPE: ${{ matrix.device_type }}
-          URL: ${{needs.pre-get.outputs.URL}}
+          URL: ${{ needs.pre-get.outputs.URL }}
 
