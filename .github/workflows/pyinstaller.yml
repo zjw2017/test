@@ -23,24 +23,24 @@ jobs:
         pip install pyinstaller
     - name: Create binary
       run: |
-        pyinstaller --onefile sdat2img.py
+        pyinstaller --onefile XiaomiUpdateInfo.py
     - if: ${{ matrix.os == 'ubuntu-latest' }}
       name: Upload binary
       uses: actions/upload-artifact@v3
       with:
-        name: sdat2img-Linux
-        path: '~/work/test/test/dist/sdat2img'
+        name: XiaomiUpdateInfo-Linux
+        path: '~/work/test/test/dist/XiaomiUpdateInfo'
 
     - if: ${{ matrix.os == 'windows-latest' }}
       name: Upload binary
       uses: actions/upload-artifact@v3
       with:
-        name: sdat2img-Windows
-        path: 'D:\a\test\test\dist\sdat2img.exe'
+        name: XiaomiUpdateInfo-Windows
+        path: 'D:\a\test\test\dist\XiaomiUpdateInfo.exe'
 
     - if: ${{ matrix.os == 'macos-latest' }}
       name: Upload binary
       uses: actions/upload-artifact@v3
       with:
-        name: sdat2img-Darwin
-        path: '~/work/test/test/dist/sdat2img'
+        name: XiaomiUpdateInfo-Darwin
+        path: '~/work/test/test/dist/XiaomiUpdateInfo'
