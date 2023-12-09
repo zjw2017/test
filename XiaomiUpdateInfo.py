@@ -147,7 +147,7 @@ def choose(name, interface):
     else:
         result = f"\ndevice: {rom_device}\nversion: {rom_version}\nbigversion: {rom_bigversion}\ncodebase: Android {rom_codebase}\nbranch: {rom_branch}\ninterface: {interface_version}\n\nfilename: {rom_filename}\nfilesize: {rom_filesize}\ndownload: https://bigota.d.miui.com/{rom_version}/{rom_filename}\nchangelog:\n{rom_changelog}\n"
 
-    print("https://ultimateota.d.miui.com" + "/" + rom_version + "/" + latset_rom_filename)
+    print(result)
 
 
 # 获取 Cookie
