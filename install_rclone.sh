@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1083
-# shellcheck disable=SC2296
-
 # error codes
 # 0 - exited without problems
 # 1 - parameters not supported were used or some unexpected error occurred
@@ -10,7 +7,6 @@
 # 3 - installed version of rclone is up to date
 # 4 - supported unzip tools are not available
 
-echo $GITHUB_TOKEN
 set -e
 
 #when adding a tool to the list make sure to also add its corresponding command further in the script
@@ -128,8 +124,8 @@ esac
 
 #download and unzip
 if [ -z "$install_beta" ]; then
-    download_link=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .browser_download_url')
-    rclone_zip=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .name')
+    download_link=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $1" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .browser_download_url')
+    rclone_zip=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $1" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .name')
 else
     download_link="https://beta.rclone.org/rclone-beta-latest-${OS}-${OS_type}.zip"
     rclone_zip="rclone-beta-latest-${OS}-${OS_type}.zip"
