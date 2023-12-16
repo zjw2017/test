@@ -13,7 +13,7 @@
 set -e
 
 #set Gitub_Token
-Gitub_Token=${{ github.token }}
+Gitub_Token=$GITHUB_TOKEN
 
 #when adding a tool to the list make sure to also add its corresponding command further in the script
 unzip_tools_list=('unzip' '7z' 'busybox')
