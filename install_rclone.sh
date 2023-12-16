@@ -122,7 +122,7 @@ else
     rclone_zip="rclone-beta-latest-${OS}-${OS_type}.zip"
 fi
 
-curl "$download_link"
+echo "$download_link"
 unzip_dir="tmp_unzip_dir_for_rclone"
 # there should be an entry in this switch for each element of unzip_tools_list
 case "$unzip_tool" in
