@@ -10,7 +10,4 @@ jobs:
       - uses: actions/checkout@main
       - name: test rclone
         run: |
-          echo $GITHUB_TOKEN
-          sudo bash install_rclone.sh
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          sudo bash install_rclone.sh ${{ github.token }}
