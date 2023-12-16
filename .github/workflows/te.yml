@@ -11,3 +11,5 @@ jobs:
       - name: test rclone
         run: |
           sudo bash install_rclone.sh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
