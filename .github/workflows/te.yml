@@ -7,7 +7,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-        uses: actions/checkout@main
+      - uses: actions/checkout@main
       - name: test rclone
         run: |
           sudo bash install_rclone.sh install
