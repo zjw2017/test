@@ -14,15 +14,6 @@ unzip_tools_list=('unzip' '7z' 'busybox')
 
 usage() { echo "Usage: sudo -v ; curl https://rclone.org/install.sh | sudo bash [-s beta]" 1>&2; exit 1; }
 
-#check for beta flag
-if [ -n "$1" ] && [ "$1" != "beta" ]; then
-    usage
-fi
-
-if [ -n "$1" ]; then
-    install_beta="beta "
-fi
-
 
 #create tmp directory and move to it with macOS compatibility fallback
 tmp_dir=$(mktemp -d 2>/dev/null || mktemp -d -t 'rclone-install.XXXXXXXXXX')
