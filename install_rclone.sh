@@ -12,9 +12,6 @@
 
 set -e
 
-#set Gitub_Token
-Gitub_Token=$GITHUB_TOKEN
-echo $Gitub_Token
 #when adding a tool to the list make sure to also add its corresponding command further in the script
 unzip_tools_list=('unzip' '7z' 'busybox')
 
@@ -130,8 +127,8 @@ esac
 
 #download and unzip
 if [ -z "$install_beta" ]; then
-    download_link=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $Gitub_Token" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .browser_download_url')
-    rclone_zip=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $Gitub_Token" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .name')
+    download_link=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .browser_download_url')
+    rclone_zip=$(curl -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/rclone/rclone/releases/latest | jq -r '.assets[] | select(.name | test("rclone-v.*-linux-amd64.zip")) | .name')
 else
     download_link="https://beta.rclone.org/rclone-beta-latest-${OS}-${OS_type}.zip"
     rclone_zip="rclone-beta-latest-${OS}-${OS_type}.zip"
