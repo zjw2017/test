@@ -10,6 +10,7 @@
 # 3 - installed version of rclone is up to date
 # 4 - supported unzip tools are not available
 
+echo $GITHUB_TOKEN
 set -e
 
 #when adding a tool to the list make sure to also add its corresponding command further in the script
