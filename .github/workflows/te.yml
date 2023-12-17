@@ -1,16 +1,20 @@
-name: test
+name: Merge Trigger Workflow
+
 on:
-  workflow_dispatch:
-  push:
-    branches: [ "master" ]
   pull_request:
     types: [closed]
+
 jobs:
-  test:
+  on_merge:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == 'true'
     steps:
-      - uses: actions/checkout@main
-      - name: test rclone
-        run: |
-          sudo bash install_rclone.sh ${{ github.token }}
+      - name: Check out code
+        uses: actions/checkout@v2
+      
+      # 在这里定义你需要执行的操作步骤
+      # 可以是构建、部署、测试等等
+      # ...
+
+      - name: Print a message
+        run: echo "This workflow was triggered because the PR was merged."
