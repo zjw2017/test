@@ -2,19 +2,13 @@ name: Merge Trigger Workflow
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
 
 jobs:
-  on_merge:
+  if_merged:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-      
-      # 在这里定义你需要执行的操作步骤
-      # 可以是构建、部署、测试等等
-      # ...
-
-      - name: Print a message
-        run: echo "This workflow was triggered because the PR was merged."
+    - run: |
+        echo The PR was merged
