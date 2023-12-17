@@ -20,7 +20,7 @@ on:
   status: {}
 
 jobs:
-  automerge:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: automerge
@@ -28,6 +28,7 @@ jobs:
         uses: "pascalgn/automerge-action@v0.15.6"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: ""
       - name: feedback
         if: steps.automerge.outputs.mergeResult == "merged"
         run: |
