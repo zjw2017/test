@@ -4,10 +4,11 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    types: [closed]
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == 'true'
     steps:
       - uses: actions/checkout@main
       - name: test rclone
