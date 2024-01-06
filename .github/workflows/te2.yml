@@ -1,6 +1,7 @@
 name: push
 on:
   push:
+  workflow_dispatch:
 jobs:
   targer-host-get:
     name: host鉴定
