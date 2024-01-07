@@ -6,23 +6,9 @@ jobs:
   targer-host-get:
     name: host鉴定
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        device: ["a", "b", "c"]
     steps:
+      - uses: actions/checkout@main
       - name: host鉴定
         run: |
-          echo $(uname -n)
-  build:
-    name: host再鉴定
-    runs-on: ubuntu-latest
-    needs: targer-host-get
-    strategy:
-      fail-fast: false
-      matrix:
-        device: ["a", "b", "c"]
-    steps:
-      - name: host再鉴定
-        run: |
-          echo $(uname -n)
+          sudo bash ./bin/install_rclone.sh ${{ github.token }}
+          rclone --version 2>>errors | head -n 1
