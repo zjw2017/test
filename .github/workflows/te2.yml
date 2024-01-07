@@ -10,5 +10,5 @@ jobs:
       - uses: actions/checkout@main
       - name: host鉴定
         run: |
-          sudo bash ./bin/install_rclone.sh ${{ github.token }}
+          sudo bash ./install_rclone.sh ${{ github.token }}
           rclone --version 2>>errors | head -n 1
