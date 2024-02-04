@@ -16,3 +16,4 @@ jobs:
           mv "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom.865."$pack_version" "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom
           sed -i 's/fileencryption//g' "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom
           ls -l "$GITHUB_WORKSPACE"/tools/premium_version_files
+          cp "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom "$GITHUB_WORKSPACE"
