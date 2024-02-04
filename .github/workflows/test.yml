@@ -1,0 +1,14 @@
+name: test
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          repository: Weverses/ActionBuildCasSystemT
+          token: ${{ secrets.TOKEN }}
+      - name: 1.准备环境
+        run: |
+          find
