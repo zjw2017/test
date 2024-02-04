@@ -12,6 +12,7 @@ jobs:
       - name: 1.准备环境
         run: |
           find
+          pack_version=premium
           mv "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom.865."$pack_version" "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom
           sed -i 's/fileencryption//g' "$GITHUB_WORKSPACE"/tools/premium_version_files/fstab.qcom
           ls -l "$GITHUB_WORKSPACE"/tools/premium_version_files
