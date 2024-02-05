@@ -22,7 +22,7 @@ jobs:
         name: 1.准备环境
         run: |
           find
-      - if: ${{ github.event.inputs.device == 'star' }} && ${{ env.pack_version == 'free' }}
+      - if: ${{ env.pack_version == 'free' }}
         name: 1.准备环境
         run: |
           find
