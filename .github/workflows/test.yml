@@ -18,11 +18,11 @@ jobs:
       - name: 2.测试环境变量
         run: |
           echo $pack_version
-      - if: ${{ github.event.inputs.device == 'star' }} && ${{ env.pack_version == 'premium' }}
+      - if: github.event.inputs.device == 'star' && env.pack_version == 'premium'
         name: 1.准备环境
         run: |
           find
-      - if: ${{ env.pack_version == 'free' }}
+      - if: github.event.inputs.device == 'star' && env.pack_version == 'free'
         name: 1.准备环境
         run: |
           find
