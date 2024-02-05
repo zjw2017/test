@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4.1.1
         with:
           repository: Weverses/ActionBuildCasSystemT
+          token: ${{ github.token }}
       - name: 1.准备环境
         run: |
           echo "pack_version=premium" >> "$GITHUB_ENV"
