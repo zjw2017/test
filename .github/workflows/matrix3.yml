@@ -33,7 +33,7 @@ jobs:
           json_output=${json_output%,}
           json_output+="]}"
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
-          echo "$json_output"
+          echo "matrix=$json_output"
           echo "matrix2={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
   job3:
     needs: job1
