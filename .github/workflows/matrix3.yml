@@ -34,7 +34,8 @@ jobs:
           json_output+="]}"
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
           echo "matrix=$json_output"
-          echo "matrix2={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+          echo "matrix2={\"list\":[{\"device\":\"umi\"},{\"device\":\"cmi\"},{\"device\":\"cas\"},{\"device\":\"apollo\"},{\"device\":\"thyme\"},{\"device\":\"alioth\"}]}" >> $GITHUB_OUTPUT
+                
   job3:
     needs: job1
     runs-on: ubuntu-latest
