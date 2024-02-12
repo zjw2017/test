@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix2: ${{ steps.set-matrix.outputs.matrix2 }}
     steps:
       - id: set-matrix
         run: |          
@@ -33,12 +34,14 @@ jobs:
           json_output+="]}"
           echo "$json_output" >> $GITHUB_OUTPUT
           echo "$json_output"
+          echo "matrix2={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
   job3:
     needs: job1
     runs-on: ubuntu-latest
     steps:
       - run: |
           echo ${{ needs.job1.outputs.matrix	}}
+          echo ${{ needs.job1.outputs.matrix2	}}
           echo ${{ fromJSON(needs.job1.outputs.matrix) }}
   job2:
     needs: job1
