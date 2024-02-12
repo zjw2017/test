@@ -31,7 +31,7 @@ jobs:
           done
           json_output=${json_output%,}
           json_output+="]}"
-          json_output=$(echo $json_output | jq -c .)
+          json_output=$(echo "$json_output" | jq -c '.' | sed 's/"/\\"/g')
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
           echo "matrix=$json_output"
   job3:
