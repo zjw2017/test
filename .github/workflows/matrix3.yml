@@ -1,5 +1,13 @@
 name: build
-on: push
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      matrix-values:
+        description: "matrix-values"
+        default: "all"
+        required: true
+
 jobs:
   job1:
     runs-on: ubuntu-latest
@@ -7,11 +15,28 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+        run: |          
+          input_var="${{ github.event.inputs.matrix-values }}"
+          if [ "$input_var" = "all"]; then
+            input_var="umi,cmi,cas,apollo,thyme,alioth"
+          elif [ "$input_var" = "865"]; then
+            input_var="umi,cmi,cas,apollo"
+          elif [ "$input_var" = "870"]; then
+            input_var="thyme,alioth"
+          fi
+          IFS=',' read -ra devices <<< "$input_var"
+          json_output="{\\\"list\\\":["
+          for device in "${devices[@]}"; do
+            json_output+="{\\\"device\\\":\\\"$device\\\"},"
+          done
+          json_output=${json_output%,}
+          json_output+="]}"
+          echo "matrix=$json_output" >> $GITHUB_OUTPUT
   job2:
     needs: job1
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
-      - run: build
+      - run: |
+          echo ${{ matrix.device }}
