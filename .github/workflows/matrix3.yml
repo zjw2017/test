@@ -17,11 +17,11 @@ jobs:
       - id: set-matrix
         run: |          
           input_var="${{ github.event.inputs.matrix-values }}"
-          if [ "$input_var" = "all"]; then
+          if [ "$input_var" = "all" ]; then
             input_var="umi,cmi,cas,apollo,thyme,alioth"
-          elif [ "$input_var" = "865"]; then
+          elif [ "$input_var" = "865" ]; then
             input_var="umi,cmi,cas,apollo"
-          elif [ "$input_var" = "870"]; then
+          elif [ "$input_var" = "870" ]; then
             input_var="thyme,alioth"
           fi
           IFS=',' read -ra devices <<< "$input_var"
