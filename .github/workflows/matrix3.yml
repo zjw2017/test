@@ -32,6 +32,7 @@ jobs:
           json_output=${json_output%,}
           json_output+="]}"
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
+          echo "$json_output"
   job2:
     needs: job1
     runs-on: ubuntu-latest
