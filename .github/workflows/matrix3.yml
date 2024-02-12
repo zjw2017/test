@@ -26,15 +26,14 @@ jobs:
             input_var="umi,cmi,cas,apollo,thyme,alioth"
           fi
           IFS=',' read -ra devices <<< "$input_var"
-          json_output="matrix={\"list\":["
+          json_output="{\"list\":["
           for device in "${devices[@]}"; do
             json_output+="{\"device\":\"$device\"},"
           done
           json_output=${json_output%,}
           json_output+="]}"
-          echo "$json_output" >> $GITHUB_OUTPUT
+          echo "matrix=$json_output" >> $GITHUB_OUTPUT
           echo "$json_output"
-          echo "matrix2={\"list\":[{\"device\":\"umi\"},{\"device\":\"cmi\"},{\"device\":\"cas\"}]}" >> $GITHUB_OUTPUT
   job3:
     needs: job1
     runs-on: ubuntu-latest
@@ -42,13 +41,13 @@ jobs:
       - run: |
           echo ${{ needs.job1.outputs.matrix	}}
           echo ${{ needs.job1.outputs.matrix2	}}
-          echo ${{ fromJSON(needs.job1.outputs.matrix2) }}
+          echo ${{ fromJSON(needs.job1.outputs.matrix) }}
   job2:
     needs: job1
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        device: ${{ fromJSON(needs.job1.outputs.matrix2) }}
+        device: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - run: |
           echo ${{ matrix.device }}
