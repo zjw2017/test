@@ -33,6 +33,7 @@ jobs:
           json_output+="]}"
           json_output=$(echo $json_output | jq -c .)
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
+          echo "matrix=$json_output"
   job3:
     needs: job1
     runs-on: ubuntu-latest
