@@ -6,7 +6,7 @@ on:
       matrix-values:
         description: "matrix-values"
         type: string
-        default: "865"
+        default: "all"
         required: true
 
 jobs:
@@ -47,4 +47,4 @@ jobs:
       matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - run: |
-          echo ${{ matrix.matrix }}
+          echo ${{ toJson(matrix) }}
