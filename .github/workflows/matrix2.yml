@@ -1,0 +1,16 @@
+name: matrix2
+on:
+  workflow_dispatch:
+    inputs:
+      matrix-values:
+        description: "matrix-values"
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        matrix-values: ${{ github.event.inputs.matrix-values }}
+    steps:
+        # 此处省略其他步骤
+        
