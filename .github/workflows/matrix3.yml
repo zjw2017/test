@@ -16,7 +16,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: |          
+        run: |
           input_var="${{ github.event.inputs.matrix-values }}"
           if [ "$input_var" = "865" ]; then
             input_var="umi,cmi,cas,apollo"
@@ -33,13 +33,6 @@ jobs:
           json_output=${json_output%,}
           json_output+="]}"
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
-  job3:
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo ${{ needs.job1.outputs.matrix	}}
-          echo ${{ fromJSON(needs.job1.outputs.matrix) }}
   job2:
     needs: job1
     runs-on: ubuntu-latest
@@ -50,3 +43,10 @@ jobs:
           echo "$MATRIX_CONTEXT" | jq -r '.list.device'
         env:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
+      - name: 删除工作流运行
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 0
