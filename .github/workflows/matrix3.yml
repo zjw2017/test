@@ -5,6 +5,7 @@ on:
     inputs:
       matrix-values:
         description: "matrix-values"
+        type: string
         default: "865"
         required: true
 
