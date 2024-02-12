@@ -33,20 +33,18 @@ jobs:
           json_output=${json_output%,}
           json_output+="]}"
           echo "matrix=$json_output" >> $GITHUB_OUTPUT
-          echo "matrix=$json_output"
-          echo "matrix2={\"list\":[{\"device\":\"umi\"},{\"device\":\"cmi\"},{\"device\":\"cas\"},{\"device\":\"apollo\"},{\"device\":\"thyme\"},{\"device\":\"alioth\"}]}" >> $GITHUB_OUTPUT
-                
+          echo "matrix=$json_output"                
   job3:
     needs: job1
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo ${{ fromJSON(needs.job1.outputs.matrix2) }}
+          echo ${{ fromJSON(needs.job1.outputs.matrix) }}
   job2:
     needs: job1
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJSON(needs.job1.outputs.matrix2) }}
+      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - run: |
           echo ${{ matrix.device }}
