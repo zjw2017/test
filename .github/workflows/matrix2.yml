@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        matrix-values: ${{ github.event.inputs.matrix-values }}
+        value: ${{ github.event.inputs.matrix-values }}
     steps:
-        # 此处省略其他步骤
+      - name: Print Matrix Value
+        run: |
+          echo "Matrix Value: ${{ matrix.value }}"
+
         
