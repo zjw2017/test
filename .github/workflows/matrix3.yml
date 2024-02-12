@@ -47,4 +47,6 @@ jobs:
       matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - run: |
-          echo "${{ toJson(matrix) }}" | jq '.list.device'
+          echo "$MATRIX_CONTEXT" | jq '.list.device'
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
