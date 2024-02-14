@@ -163,6 +163,7 @@ jobs:
           MATRIX_CONTEXT: ${{ toJson(matrix) }}
       - name: 下载系统包
         run: |
+          device=$(echo "$MATRIX_CONTEXT" | jq -r '.list.device')
           sudo apt-get install python3 aria2 p7zip-full zstd unzip zipalign
           sudo bash "$GITHUB_WORKSPACE"/tools/install_rclone.sh ${{ secrets.GH_TOKEN }}
           mkdir -p ~/.config/rclone/
@@ -189,6 +190,7 @@ jobs:
             aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" "$URL"
           fi
         env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
           URL: ${{ needs.url-get.outputs.URL }}
       - name: 自动构建
         run: |
