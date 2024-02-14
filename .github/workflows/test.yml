@@ -15,14 +15,13 @@ jobs:
           cd "$GITHUB_WORKSPACE"/corepatch
           sudo $Apktool d -q "$GITHUB_WORKSPACE"/corepatch/services.apk
           target_smali="$GITHUB_WORKSPACE"/corepatch/services/smali/com/android/server/display/DisplayDeviceConfig.smali
-          cat $target_smali
           target_line=$(grep -n -E '\.method.*loadPeakDefaultRefreshRate' $target_smali | cut -d: -f1)
           echo $target_line
           end_line=$(sed -n "$target_line,/^\.end method/{p;/\.end method/q}" $target_smali | wc -l)
           end_line=$((target_line + end_line))
           echo $end_line
           sed -i "${target_line},${end_line}d" "$target_smali"
-          cat $target_smali
+          echo delete
           sed -i "${target_line}i\\
           .method private loadPeakDefaultRefreshRate(Lcom/android/server/display/config/RefreshRateConfigs;)V\\
               .registers 1\\
