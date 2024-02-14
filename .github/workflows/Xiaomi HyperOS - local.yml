@@ -90,7 +90,7 @@ jobs:
         env:
           INFO: ${{ inputs.INFO }}
   build_matrix:
-    name: 自动构建
+    name: 设置构建阵列
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
