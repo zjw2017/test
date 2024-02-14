@@ -24,7 +24,7 @@ jobs:
           echo delete
           sudo sed -i "${target_line}i\\
           .method private loadPeakDefaultRefreshRate(Lcom/android/server/display/config/RefreshRateConfigs;)V\\
-              .registers 1\\
+              .registers 3\\
               .param p1, \"refreshRateConfigs\"  # Lcom/android/server/display/config/RefreshRateConfigs;\\
           \\
               const v0, 0x3c\\
