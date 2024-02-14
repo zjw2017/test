@@ -1,5 +1,6 @@
 name: test
 on:
+  push:
   workflow_dispatch:
     inputs:
       device:
@@ -15,6 +16,7 @@ jobs:
       - name: 1.准备环境
         run: |
           echo "pack_version=free" >> "$GITHUB_ENV"
+          eecho $whoami
       - name: 2.测试环境变量
         run: |
           echo $pack_version
