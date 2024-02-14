@@ -2,29 +2,39 @@ name: test
 on:
   push:
   workflow_dispatch:
-    inputs:
-      device:
-        description: "待操作的系统包下载地址"
-        required: true
-      build_device:
-        description: "底包机型代号"
-        required: true
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: 1.准备环境
         run: |
-          echo "pack_version=free" >> "$GITHUB_ENV"
-          whoami
-      - name: 2.测试环境变量
-        run: |
-          echo $pack_version
-      - if: github.event.inputs.device == 'star' && env.pack_version == 'premium'
-        name: 1.准备环境
-        run: |
-          find
-      - if: github.event.inputs.device == 'star' && env.pack_version == 'free'
-        name: 1.准备环境
-        run: |
-          find
+          sudo mkdir -p "$GITHUB_WORKSPACE"/corepatch
+          Apktool="java -jar "$GITHUB_WORKSPACE"/tools/apktool_2.9.0.jar"
+          sudo cp -rf "$GITHUB_WORKSPACE"/services.jar "$GITHUB_WORKSPACE"/corepatch/services.apk
+          cd "$GITHUB_WORKSPACE"/corepatch
+          sudo $Apktool d -q "$GITHUB_WORKSPACE"/corepatch/services.apk
+          target_smali="$GITHUB_WORKSPACE"/corepatch/services/smali/com/android/server/display/DisplayDeviceConfig.smali
+          cat $target_smali
+          target_line=$(grep -n -E '\.method.*loadPeakDefaultRefreshRate' $target_smali | cut -d: -f1)
+          echo $target_line
+          end_line=$(sed -n "$target_line,/^\.end method/{p;/\.end method/q}" $target_smali | wc -l)
+          end_line=$((target_line + end_line))
+          echo $end_line
+          sed -i "${target_line},${end_line}d" "$target_smali"
+          cat $target_smali
+          sed -i "${target_line}i\\
+          .method private loadPeakDefaultRefreshRate(Lcom/android/server/display/config/RefreshRateConfigs;)V\\
+              .registers 1\\
+              .param p1, \"refreshRateConfigs\"  # Lcom/android/server/display/config/RefreshRateConfigs;\\
+          \\
+              const v0, 0x3c\\
+          \\
+              iput v0, p0, Lcom/android/server/display/DisplayDeviceConfig;->mDefaultPeakRefreshRate:I\\
+          \\
+              return-void\\
+          .end method\\
+          " $target_smali
+          cd "$GITHUB_WORKSPACE"/corepatch/services/
+          sudo $Apktool b -q -f -c "$GITHUB_WORKSPACE"/corepatch/services/ -o services.jar
+          sudo cp -rf "$GITHUB_WORKSPACE"/corepatch/services/services.jar "$GITHUB_WORKSPACE"/images/system/system/framework/services.jar
+          sudo rm -rf "$GITHUB_WORKSPACE"/corepatch
