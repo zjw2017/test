@@ -20,9 +20,9 @@ jobs:
           end_line=$(sed -n "$target_line,/^\.end method/{p;/\.end method/q}" $target_smali | wc -l)
           end_line=$((target_line + end_line))
           echo $end_line
-          sed -i "${target_line},${end_line}d" "$target_smali"
+          sudo sed -i "${target_line},${end_line}d" "$target_smali"
           echo delete
-          sed -i "${target_line}i\\
+          sudo sed -i "${target_line}i\\
           .method private loadPeakDefaultRefreshRate(Lcom/android/server/display/config/RefreshRateConfigs;)V\\
               .registers 1\\
               .param p1, \"refreshRateConfigs\"  # Lcom/android/server/display/config/RefreshRateConfigs;\\
@@ -34,6 +34,7 @@ jobs:
               return-void\\
           .end method\\
           " $target_smali
+          cat $target_smali | grep -n "const v0, 0x3c"
           cd "$GITHUB_WORKSPACE"/corepatch/services/
           sudo $Apktool b -q -f -c "$GITHUB_WORKSPACE"/corepatch/services/ -o services.jar
           sudo cp -rf "$GITHUB_WORKSPACE"/corepatch/services/services.jar "$GITHUB_WORKSPACE"/images/system/system/framework/services.jar
