@@ -10,7 +10,6 @@ jobs:
         with:
           repository: Weverses/ActionBuildCasSystemT
           token: ${{ secrets.GH_TOKEN }}
-          fetch-depth: 1
       - name: 1.准备环境
         run: |
           ls -al
