@@ -6,12 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
-        with:
-          repository: Weverses/ActionBuildCasSystemT
-          token: ${{ secrets.GH_TOKEN }}
-          fetch-depth: 1
       - name: 1.准备环境
         run: |
-          ls -al
-          du -sh .git
+          echo "NEW_PACKAGE_NAME=123" >> "$GITHUB_ENV"
+      - name: 2.准备环境
+        run: |
+          echo "$NEW_PACKAGE_NAME"
