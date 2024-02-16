@@ -12,4 +12,4 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
       - name: 1.准备环境
         run: |
-          find . -name "123pan.py"
+          ls -al
