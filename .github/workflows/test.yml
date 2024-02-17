@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    if: github.repository == 'octo-org/octo-repo-prod'
     runs-on: ubuntu-latest
     steps:
      -  name: 处理包
