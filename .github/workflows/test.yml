@@ -10,11 +10,11 @@ jobs:
         run: |
           mkdir -p "$GITHUB_WORKSPACE"/GithubRelease
           cd "$GITHUB_WORKSPACE"/GithubRelease
-          touch test1.txt
-          echo hello > test1.txt
+          touch test2.txt
+          echo hello > test2.txt
           cd "$GITHUB_WORKSPACE"
           touch file.log
-          echo "test1.txt" > file.log
+          echo "test2.txt" > file.log
      - name: 上传到Github Release
        uses: ncipollo/release-action@main
        with:
