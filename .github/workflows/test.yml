@@ -26,3 +26,11 @@ jobs:
          artifactErrorsFailBuild: true
          removeArtifacts: true
          token: ${{ secrets.GH_TOKEN }}
+     - uses: robinraju/release-downloader@v1.9
+       with:
+         repository: Weverses/ActionBuildCasSystemT
+         tag: "OS1.0.24.1.22.DEV"
+         fileName: "miui*"
+     -  name: 处理包
+        run: |
+          ls -l
