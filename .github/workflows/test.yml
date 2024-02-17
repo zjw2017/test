@@ -6,9 +6,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 1.准备环境
+     -  name: 处理包
         run: |
-          echo "NEW_PACKAGE_NAME=123" >> "$GITHUB_ENV"
-      - name: 2.准备环境
-        run: |
-          echo "$NEW_PACKAGE_NAME"
+          mkdir -p "$GITHUB_WORKSPACE"/GithubRelease
+          cd "$GITHUB_WORKSPACE"/GithubRelease
+          touch test1.txt
+          echo hello > test1.txt
+          cd "$GITHUB_WORKSPACE"
+          touch file.log
+          echo "test1.txt" > file.log
+     - name: 上传到Github Release
+       uses: ncipollo/release-action@main
+       with:
+         artifacts: ${{ github.workspace }}/GithubRelease/*
+         name: "test"
+         tag: "test"
+         bodyFile: "${{ github.workspace }}/file.log"
+         allowUpdates: true
+         artifactErrorsFailBuild: true
+         removeArtifacts: true
+         token: ${{ secrets.GH_TOKEN }}
