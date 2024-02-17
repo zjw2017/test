@@ -7,7 +7,16 @@ jobs:
     name: 上传到123盘
     runs-on: ubuntu-latest
     steps:
+      - name: 下载 123pan.py
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: Weverses/ActionBuildCasSystemT
+          token: ${{ secrets.GH_TOKEN }}
+          sparse-checkout: |
+            tools/python/123pan.py
+            common_files/ApolloCamera.zip
+          sparse-checkout-cone-mode: false
       - name: 合并分卷并上传
         run: |
-          ping open-api.123pan.com
-          
+          python3 "$GITHUB_WORKSPACE"/tools/python/123pan.py ${{ secrets.CLIENTID }} ${{ secrets.CLIENTSECRET }} 0 "$GITHUB_WORKSPACE"/common_files/ApolloCamera.zip
+               
