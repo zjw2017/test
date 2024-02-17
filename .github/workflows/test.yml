@@ -27,12 +27,10 @@ jobs:
          artifactErrorsFailBuild: true
          removeArtifacts: true
          token: ${{ secrets.GH_TOKEN }}
-     - uses: robinraju/release-downloader@v1.9
+     - name: 删除 test 的 Github Release
+       uses: ncipollo/release-action@main
        with:
-         repository: Weverses/ActionBuildCasSystemT
-         tag: "OS1.0.24.1.22.DEV"
-         fileName: "miui*"
+         name: "test"
+         tag: "test"
+         removeArtifacts: true
          token: ${{ secrets.GH_TOKEN }}
-     -  name: 处理包
-        run: |
-          ls -l
