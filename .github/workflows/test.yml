@@ -31,6 +31,7 @@ jobs:
          repository: Weverses/ActionBuildCasSystemT
          tag: "OS1.0.24.1.22.DEV"
          fileName: "miui*"
+         token: ${{ secrets.GH_TOKEN }}
      -  name: 处理包
         run: |
           ls -l
