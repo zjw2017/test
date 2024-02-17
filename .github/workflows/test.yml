@@ -8,4 +8,4 @@ jobs:
     steps:
      -  name: 处理包
         run: |
-          dh -h
+          df -h
