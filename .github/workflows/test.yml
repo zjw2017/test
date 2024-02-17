@@ -3,12 +3,10 @@ on:
   push:
   workflow_dispatch:
 jobs:
-  build:
+  pan123_upload:
+    name: 上传到123盘
     runs-on: ubuntu-latest
     steps:
-      -  name: 查看空间
-         run: |
-           df -h .
       - name: 精简无用组件
         run: |
           docker rmi `docker images -q` || true
@@ -26,6 +24,61 @@ jobs:
           temp-reserve-mb: 1024
           remove-android: "true"
           remove-haskell: "true"
-      -  name: 查看空间
-         run: |
-           df -h .
+      - name: 下载 123pan.py
+        uses: actions/checkout@v4.1.1
+        with:
+          repository: Weverses/ActionBuildCasSystemT
+          token: ${{ secrets.GH_TOKEN }}
+          sparse-checkout: |
+            tools/python/123pan.py
+          sparse-checkout-cone-mode: false
+      - name: 下载 Github Release
+        uses: robinraju/release-downloader@v1.9
+        with:
+            repository: Weverses/ActionBuildCasSystemT
+            tag: "OS1.0.24.2.17.DEV"
+            fileName: "miui*"
+            token: ${{ secrets.GH_TOKEN }}
+      - name: 合并分卷并上传
+        run: |
+          success=0
+          find . -type f -name '*zip00*' -print0 | while IFS= read -r -d '' files; do
+            file=$(basename "$files")
+            zip_name="${file%.*}.zip"
+            if cat "${zip_name}"* >"merged_file.zip"; then
+              rm -rf "${zip_name}"*
+              mv merged_file.zip "$zip_name"
+              echo "成功创建 ${zip_name}"
+              echo "开始上传 ${zip_name}"
+              if python3 "$GITHUB_WORKSPACE"/tools/python/123pan.py ${{ secrets.CLIENTID }} ${{ secrets.CLIENTSECRET }} 4153611 "$GITHUB_WORKSPACE"/"$zip_name"; then
+                echo "成功上传 ${zip_name}"
+                success=$((success + 1))
+                device=$(echo $zip_name | cut -d"_" -f2)
+                device=${device,,}
+                if [[ "$device" == "star" ]]; then
+                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"小米11 Pro/Ultra '"$date"'已构建完成","content":" **小米11 Pro/Ultra '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://onedrive.zjw.js.cn/RubbishBin/DevPackages/'"$NEW_PACKAGE_NAME"'](https://onedrive.zjw.js.cn/RubbishBin/DevPackages/'"$NEW_PACKAGE_NAME"')** ","topic":"lahaina","template":"markdown"}' http://www.pushplus.plus/send || true
+                elif [[ "$device" == "venus" ]]; then
+                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"小米11 '"$date"'已构建完成","content":" **小米11 '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://onedrive.zjw.js.cn/RubbishBin/DevPackages/'"$NEW_PACKAGE_NAME"'](https://onedrive.zjw.js.cn/RubbishBin/DevPackages/'"$NEW_PACKAGE_NAME"')** ","topic":"lahaina","template":"markdown"}' http://www.pushplus.plus/send || true
+                fi
+              else
+                echo "${zip_name} 上传失败"
+              fi
+            else
+              echo "创建 ${zip_name} 失败"
+            fi
+          done
+          if [[ $success -eq 0 ]]; then
+            echo "上传成功次数：0"
+            exit 1
+          fi
+        env:
+          date: "OS1.0.24.2.17.DEV"
+          NEW_PACKAGE_NAME: "temp"
+          MD5: "temp"
+      - name: 删除工作流运行
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 0
