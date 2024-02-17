@@ -31,5 +31,6 @@ jobs:
        with:
          name: "test"
          tag: "test"
+         allowUpdates: true
          removeArtifacts: true
          token: ${{ secrets.GH_TOKEN }}
