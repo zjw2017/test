@@ -8,29 +8,4 @@ jobs:
     steps:
      -  name: 处理包
         run: |
-          mkdir -p "$GITHUB_WORKSPACE"/GithubRelease
-          cd "$GITHUB_WORKSPACE"/GithubRelease
-          touch test2.txt
-          echo hello > test2.txt
-          cd "$GITHUB_WORKSPACE"
-          touch file.log
-          echo "test2.txt" > file.log
-     - name: 上传到Github Release
-       uses: ncipollo/release-action@main
-       with:
-         artifacts: ${{ github.workspace }}/GithubRelease/*
-         name: "test"
-         tag: "test"
-         bodyFile: "${{ github.workspace }}/file.log"
-         allowUpdates: true
-         artifactErrorsFailBuild: true
-         removeArtifacts: true
-         token: ${{ secrets.GH_TOKEN }}
-     - name: 删除 test 的 Github Release
-       uses: ncipollo/release-action@main
-       with:
-         name: "test"
-         tag: "test"
-         allowUpdates: true
-         removeArtifacts: true
-         token: ${{ secrets.GH_TOKEN }}
+          dh -h
