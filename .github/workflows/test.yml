@@ -43,12 +43,10 @@ jobs:
           success=0
           find . -type f -name '*zip00*' -print0 | while IFS= read -r -d '' files; do
             file=$(basename "$files")
-            echo $file
             NEW_PACKAGE_NAME="${file%.*}.zip"
-            echo $NEW_PACKAGE_NAME
             if cat "${NEW_PACKAGE_NAME}"* >"merged_file.zip"; then
               rm -rf "${NEW_PACKAGE_NAME}"*
-              mv merged_file.zip "$NEW_PACKAGE_NAPME"
+              mv merged_file.zip "$NEW_PACKAGE_NAME"
               echo "成功创建 ${NEW_PACKAGE_NAME}"
               echo "开始上传 ${NEW_PACKAGE_NAME}"
               if bash upload.sh "$GITHUB_WORKSPACE"/"$NEW_PACKAGE_NAME"; then
