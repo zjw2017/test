@@ -44,7 +44,6 @@ jobs:
           find . -type f -name '*zip00*' -print0 | while IFS= read -r -d '' files; do
             file=$(basename "$files")
             NEW_PACKAGE_NAME="${file%.*}.zip"
-            NEW_PACKAGE_NAME=$NEW_PACKAGE_NAME
             if cat "${NEW_PACKAGE_NAME}"* >"merged_file.zip"; then
               rm -rf "${NEW_PACKAGE_NAME}"*
               mv merged_file.zip "$NEW_PACKAGE_NAPME"
