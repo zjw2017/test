@@ -35,7 +35,7 @@ jobs:
         uses: robinraju/release-downloader@v1.9
         with:
             repository: Weverses/ActionBuildCasSystemT
-            tag: "OS1.0.24.2.17.DEV"
+            tag: "OS1.0.24.2.18.DEV"
             fileName: "miui*"
             token: ${{ secrets.GH_TOKEN }}
       - name: 合并分卷并上传
