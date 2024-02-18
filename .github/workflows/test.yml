@@ -71,7 +71,7 @@ jobs:
             exit 1
           fi
         env:
-          date: "OS1.0.24.2.17.DEV"
+          date: "OS1.0.24.2.18.DEV"
           NEW_PACKAGE_NAME: "temp"
           MD5: "temp"
       - name: 删除工作流运行
