@@ -13,19 +13,8 @@ jobs:
           repository: Weverses/ActionBuildCasSystemT
           token: ${{ secrets.GH_TOKEN }}
           sparse-checkout: |
-            common_files/ApolloCamera.zip
+            upload.sh
           sparse-checkout-cone-mode: false
       - name: 合并分卷并上传
         run: |
-          mv ./common_files/ApolloCamera.zip ./
-          curl -X POST \
-            -H "Authorization: ${{ secrets.AUTHORIZATION }}" \
-            -H "Platform: open_platform" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "parentFileID": 0,
-              "filename": "ApolloCamera.zip",
-              "etag": "5d138878ba527b1f58a5bb28256956be",
-              "size": 80399354
-            }' \
-          "https://open-api.123pan.com/upload/v1/file/create"      
+          echo hello
