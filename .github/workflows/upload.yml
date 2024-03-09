@@ -11,6 +11,7 @@ jobs:
     name: 下载ROM
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: 准备 Rclone
         run: |
           sudo bash "$GITHUB_WORKSPACE"/tools/install_rclone.sh ${{ secrets.GH_TOKEN }}
