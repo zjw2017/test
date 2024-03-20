@@ -42,6 +42,7 @@ jobs:
             echo "开始上传 ${NEW_PACKAGE_NAME}"
             rclone mkdir 123pan:/test
             rclone copy -P ./zip/* 123pan:/test --buffer-size=1024M
+          done
         env:
           date: "OS1.0.24.3.11.DEV"
           MD5: "temp"
