@@ -23,6 +23,8 @@ jobs:
           temp-reserve-mb: 1024
           remove-android: "true"
           remove-haskell: "true"
+      - name: 检出仓库文件
+        uses: actions/checkout@v4.1.1
       - name: 下载 Github Release
         uses: robinraju/release-downloader@v1.9
         with:
@@ -30,7 +32,7 @@ jobs:
             tag: "OS1.0.24.3.11.DEV"
             fileName: "miui*"
             token: ${{ secrets.GH_TOKEN }}
-      - name: 合并分卷并上传
+      - name: 安装 Rclone
         run: |
             sudo bash "$GITHUB_WORKSPACE"/tools/install_rclone.sh ${{ secrets.GH_TOKEN }}
             mkdir -p ~/.config/rclone/
