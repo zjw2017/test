@@ -23,63 +23,27 @@ jobs:
           temp-reserve-mb: 1024
           remove-android: "true"
           remove-haskell: "true"
-      - name: 下载 upload.sh
-        uses: actions/checkout@v4.1.1
-        with:
-          repository: Weverses/ActionBuildCasSystemT
-          token: ${{ secrets.GH_TOKEN }}
-          sparse-checkout: |
-            upload.sh
-          sparse-checkout-cone-mode: false
       - name: 下载 Github Release
         uses: robinraju/release-downloader@v1.9
         with:
             repository: Weverses/ActionBuildCasSystemT
-            tag: "OS1.0.24.2.17.DEV"
+            tag: "OS1.0.24.3.11.DEV"
             fileName: "miui*"
             token: ${{ secrets.GH_TOKEN }}
       - name: 合并分卷并上传
         run: |
-          success=0
           find . -type f -name '*zip00*' -print0 | while IFS= read -r -d '' files; do
             file=$(basename "$files")
             NEW_PACKAGE_NAME="${file%.*}.zip"
-            if cat "${NEW_PACKAGE_NAME}"* >"merged_file.zip"; then
-              rm -rf "${NEW_PACKAGE_NAME}"*
-              mv merged_file.zip "$NEW_PACKAGE_NAME"
-              echo "成功创建 ${NEW_PACKAGE_NAME}"
-              echo "开始上传 ${NEW_PACKAGE_NAME}"
-              if bash upload.sh "$GITHUB_WORKSPACE"/"$NEW_PACKAGE_NAME"; then
-                echo "成功上传 ${NEW_PACKAGE_NAME}"
-                success=$((success + 1))
-                device=$(echo $NEW_PACKAGE_NAME | cut -d"_" -f2)
-                device=${device,,}
-                if [[ "$device" == "umi" ]]; then
-                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"小米10 '"$date"'已构建完成","content":" **小米10 '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://www.123pan.com/s/jKv8Vv-JkuWd.html](https://www.123pan.com/s/jKv8Vv-JkuWd.html)** ","topic":"umi","template":"markdown"}' http://www.pushplus.plus/send || true
-                elif [[ "$device" == "cmi" ]]; then
-                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"小米10Pro '"$date"'已构建完成","content":" **小米10Pro '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://www.123pan.com/s/jKv8Vv-JkuWd.html](https://www.123pan.com/s/jKv8Vv-JkuWd.html)** ","topic":"cmi","template":"markdown"}' http://www.pushplus.plus/send || true
-                elif [[ "$device" == "cas" ]]; then
-                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"小米10 Ultra '"$date"'已构建完成","content":" **小米10 Ultra '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://www.123pan.com/s/jKv8Vv-JkuWd.html](https://www.123pan.com/s/jKv8Vv-JkuWd.html)** ","topic":"cas","template":"markdown"}' http://www.pushplus.plus/send || true
-                elif [[ "$device" == "apollo" ]]; then
-                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"红米K30S Ultra '"$date"'已构建完成","content":" **红米K30S Ultra '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://www.123pan.com/s/jKv8Vv-JkuWd.html](https://www.123pan.com/s/jKv8Vv-JkuWd.html)** ","topic":"cas","template":"markdown"}' http://www.pushplus.plus/send || true
-                elif [[ "$device" == "thyme" ]]; then
-                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"小米10S '"$date"'已构建完成","content":" **小米10S '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://www.123pan.com/s/jKv8Vv-JkuWd.html](https://www.123pan.com/s/jKv8Vv-JkuWd.html)** ","topic":"umi","template":"markdown"}' http://www.pushplus.plus/send || true
-                elif [[ "$device" == "alioth" ]]; then
-                  curl -i -X POST -H 'Content-type':'application/json' -d '{"token":"${{ secrets.appToken2 }}","title":"红米K40 '"$date"'已构建完成","content":" **红米K40 '"$date"'已构建完成** \n \n **包名：'"$NEW_PACKAGE_NAME"'** \n \n **MD5：'"$MD5"'** \n \n **下载地址为：[https://www.123pan.com/s/jKv8Vv-JkuWd.html](https://www.123pan.com/s/jKv8Vv-JkuWd.html)** ","topic":"cmi","template":"markdown"}' http://www.pushplus.plus/send || true
-                fi
-              else
-                echo "${NEW_PACKAGE_NAME} 上传失败"
-              fi
-            else
-              echo "创建 ${NEW_PACKAGE_NAME} 失败"
-            fi
-          done
-          if [[ $success -eq 0 ]]; then
-            echo "上传成功次数：0"
-            exit 1
-          fi
+            cat "${NEW_PACKAGE_NAME}"* >"merged_file.zip"
+            rm -rf "${NEW_PACKAGE_NAME}"*
+            mv merged_file.zip "$NEW_PACKAGE_NAME"
+            echo "成功创建 ${NEW_PACKAGE_NAME}"
+            echo "开始上传 ${NEW_PACKAGE_NAME}"
+            rclone mkdir 123pan:/test
+            rclone copy -P ./zip/* 123pan:/test --buffer-size=1024M
         env:
-          date: "OS1.0.24.2.17.DEV"
+          date: "OS1.0.24.3.11.DEV"
           MD5: "temp"
       - name: 删除工作流运行
         uses: Mattraks/delete-workflow-runs@v2
