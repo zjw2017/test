@@ -32,6 +32,11 @@ jobs:
             token: ${{ secrets.GH_TOKEN }}
       - name: 合并分卷并上传
         run: |
+            sudo bash "$GITHUB_WORKSPACE"/tools/install_rclone.sh ${{ secrets.GH_TOKEN }}
+            mkdir -p ~/.config/rclone/
+            unzip -o -q -P ${{ secrets.PASSWORD }} "$GITHUB_WORKSPACE"/tools/rclone_config.zip -d ~/.config/rclone/
+      - name: 合并分卷并上传
+        run: |
           find . -type f -name '*zip00*' -print0 | while IFS= read -r -d '' files; do
             file=$(basename "$files")
             NEW_PACKAGE_NAME="${file%.*}.zip"
