@@ -6,57 +6,17 @@ jobs:
     name: 上传到123盘
     runs-on: ubuntu-latest
     steps:
-      - name: 精简无用组件
+      - name: 发送开始构建通知
         run: |
-          docker rmi `docker images -q` || true
-          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/sudo apt/sources.list.d || true
-          sudo apt -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php* || true
-          sudo apt -y autoremove --purge || true
-          sudo apt -y autoclean || true
-          sudo apt clean || true
-      - name: 最大化并挂载构建空间
-        uses: easimon/maximize-build-space@master
-        with:
-          root-reserve-mb: 1024
-          swap-size-mb: 6144
-          remove-dotnet: "true"
-          temp-reserve-mb: 1024
-          remove-android: "true"
-          remove-haskell: "true"
-      - name: 检出仓库文件
-        uses: actions/checkout@v4.1.1
-      - name: 下载 Github Release
+          echo "device=ishtar" >> "$GITHUB_ENV"
+      - name: 下载 TWRP
         uses: robinraju/release-downloader@v1.9
         with:
-            repository: Weverses/ActionBuildCasSystemT
-            tag: "OS1.0.24.3.11.DEV"
-            fileName: "miui*"
+            repository: zjw2017/TWRP_Backup
+            tag: "twrp"
+            fileName: "*{{ env.device }}*"
+            out-file-path: "{{ env.device }}_files"
             token: ${{ secrets.GH_TOKEN }}
-      - name: 安装 Rclone
+      - name: ls -l
         run: |
-            sudo bash "$GITHUB_WORKSPACE"/tools/install_rclone.sh ${{ secrets.GH_TOKEN }}
-            mkdir -p ~/.config/rclone/
-            unzip -o -q -P ${{ secrets.PASSWORD }} "$GITHUB_WORKSPACE"/tools/rclone_config.zip -d ~/.config/rclone/
-      - name: 合并分卷并上传
-        run: |
-          find . -type f -name '*zip00*' -print0 | while IFS= read -r -d '' files; do
-            file=$(basename "$files")
-            NEW_PACKAGE_NAME="${file%.*}.zip"
-            cat "${NEW_PACKAGE_NAME}"* >"merged_file.zip"
-            rm -rf "${NEW_PACKAGE_NAME}"*
-            mv merged_file.zip "$NEW_PACKAGE_NAME"
-            echo "成功创建 ${NEW_PACKAGE_NAME}"
-            echo "开始上传 ${NEW_PACKAGE_NAME}"
-            rclone mkdir 123pan:/test
-            rclone copy -P ./zip/* 123pan:/test --buffer-size=1024M
-          done
-        env:
-          date: "OS1.0.24.3.11.DEV"
-          MD5: "temp"
-      - name: 删除工作流运行
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 0
-          keep_minimum_runs: 0
+          ls -l ./$device_files
