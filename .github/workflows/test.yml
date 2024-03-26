@@ -19,4 +19,12 @@ jobs:
             token: ${{ secrets.GH_TOKEN }}
       - name: ls -l
         run: |
-          ls -l ./$device_files
+          # 修补 TWRP
+          mkdir -p "$GITHUB_WORKSPACE"/twrp
+          twrp_zip_name="$(ls "$GITHUB_WORKSPACE"/"$device"_files | grep skkk)"
+          echo "TWRP压缩包名为：$twrp_zip_name"
+          unzip -o -q "$GITHUB_WORKSPACE"/"$device"_files/$twrp_zip_name -d "$GITHUB_WORKSPACE"/twrp
+          twrp_img_name=$(ls "$GITHUB_WORKSPACE"/twrp)
+          echo "TWRP镜像名为：$twrp_img_name"
+          rm -rf "$GITHUB_WORKSPACE"/twrp
+        
