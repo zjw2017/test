@@ -10,8 +10,10 @@ jobs:
       - name: CPU Info
         run: |
           cat /proc/cpuinfo
+          echo "my=123" >> $GITHUB_ENV
       - name: Memery Info
         run: |
+          echo "$my"
           free -h
       - name: Disk Info
         run: |
