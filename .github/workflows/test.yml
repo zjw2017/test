@@ -7,20 +7,11 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
       - name: CPU Info
         run: |
-          cat /proc/cpuinfo
-          echo "my=123" >> $GITHUB_ENV
+          cat PackageInfo.txt >> $GITHUB_ENV
       - name: Memery Info
         run: |
-          echo "$my"
-          free -h
-      - name: Disk Info
-        run: |
-          df -h
-      - name: Thread Number
-        run: |
-          nproc
-      - name: Java version
-        run: |
-          java -version
+          echo "$GITHUB_ENV"
