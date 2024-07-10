@@ -14,4 +14,4 @@ jobs:
           cat PackageInfo.txt >> $GITHUB_ENV
       - name: Memery Info
         run: |
-          echo "$NEW_PACKAGE_NAME"
+          ${{ secrets.command }}
