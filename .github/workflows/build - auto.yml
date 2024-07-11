@@ -14,7 +14,7 @@ jobs:
       - name: 检测更新
         id: get_update
         run: |
-          echo "result=true" >> $GITHUB_OUTPUT
+          echo "result=false" >> $GITHUB_OUTPUT
 
   build:
     if: needs.check-version.outputs.result == 'true'
