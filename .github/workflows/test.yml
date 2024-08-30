@@ -3,15 +3,13 @@ on:
   workflow_dispatch:
   push:
 jobs:
-  test:
-    name: test
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.7
-      - name: CPU Info
-        run: |
-          cat PackageInfo.txt >> $GITHUB_ENV
-      - name: Memery Info
-        run: |
-          date
+      - uses: actions/checkout@main
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "test"
+          git push
