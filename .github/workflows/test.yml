@@ -11,4 +11,7 @@ jobs:
         run: |
           df -h
           free -g
-          whoami
+          if [[ "$(whoami)" == "runner" ]]; then
+            export TMPDIR="$GITHUB_WORKSPACE"/TMPDIR
+          fi
+          echo $TMPDIR
