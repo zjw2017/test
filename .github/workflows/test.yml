@@ -13,10 +13,8 @@ jobs:
           free -g
           echo ""
           post_version=123.zip
-          if [[ "$(whoami)" == "runner" ]]; then
-            export TMPDIR="$GITHUB_WORKSPACE"/TMPDIR
-          fi
           cat TEST.sh
+          echo ""
           bash TEST.sh
           sudo bash TEST.sh
           sudo -E bash TEST.sh
