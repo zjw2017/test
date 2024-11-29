@@ -18,4 +18,5 @@ jobs:
           fi
           echo 'echo $TMPDIR' >TEST.sh
           cat TEST.sh
-          bash TEST.sh
+          sudo bash TEST.sh
+          sudo -E bash TEST.sh
