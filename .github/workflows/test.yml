@@ -11,3 +11,4 @@ jobs:
         run: |
           df -h
           free -g
+          whoami
