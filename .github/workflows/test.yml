@@ -16,6 +16,7 @@ jobs:
           if [[ "$(whoami)" == "runner" ]]; then
             export TMPDIR="$GITHUB_WORKSPACE"/TMPDIR
           fi
+          echo 'export TMPDIR="$GITHUB_WORKSPACE"/TMPDIR'
           echo 'echo $TMPDIR' >TEST.sh
           cat TEST.sh
           bash TEST.sh
