@@ -19,3 +19,5 @@ jobs:
           sudo bash TEST.sh
           sudo -E bash TEST.sh
           TMPDIR="$GITHUB_WORKSPACE"/TMPDIR sudo bash TEST.sh
+          bash user.sh
+          sudo bash user.sh
