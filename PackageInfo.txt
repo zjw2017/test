@@ -1,8 +1,0 @@
-MD5=
-NEW_PACKAGE_NAME=miui____14.0_2in1_Root.zip
-bottom_os_date=
-bottom_security_patch=
-bottom_base_line=
-target_os_date=
-target_security_patch=
-target_base_line=

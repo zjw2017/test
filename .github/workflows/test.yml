@@ -12,12 +12,3 @@ jobs:
           df -h
           free -g
           echo ""
-          post_version=123.zip
-          cat TEST.sh
-          echo ""
-          bash TEST.sh
-          sudo bash TEST.sh
-          sudo -E bash TEST.sh
-          TMPDIR="$GITHUB_WORKSPACE"/TMPDIR sudo bash TEST.sh
-          bash user.sh
-          sudo bash user.sh
