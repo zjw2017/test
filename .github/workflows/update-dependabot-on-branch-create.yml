@@ -4,7 +4,7 @@ on:
   create:
     branches:
       - '**'  # 监听所有新创建的分支
-
+  workflow_dispatch:
 jobs:
   update-dependabot:
     runs-on: ubuntu-latest
@@ -19,6 +19,7 @@ jobs:
 
       - name: Update target-branch in dependabot.yml
         run: |
+          ls .github
           sed -i "s/target-branch: .*/target-branch: ${branch_name}/" .github/dependabot.yml
 
       - name: Commit and push changes
