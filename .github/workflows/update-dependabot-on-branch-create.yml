@@ -1,0 +1,30 @@
+name: Update Dependabot Target Branch on Branch Creation
+
+on:
+  create:
+    branches:
+      - '**'  # 监听所有新创建的分支
+
+jobs:
+  update-dependabot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get created branch name
+        id: get_branch
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
+      - name: Update target-branch in dependabot.yml
+        run: |
+          sed -i "s/target-branch: .*/target-branch: ${branch_name}/" .github/dependabot.yml
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/dependabot.yml
+          git commit -m "Update dependabot target-branch to ${branch_name}" || echo "No changes to commit"
+          git push origin HEAD
