@@ -1,0 +1,20 @@
+name: Update Dependabot Target Branch on Branch Creation
+
+on:
+  workflow_dispatch:
+jobs:
+  update-dependabot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get created branch name
+        id: get_branch
+        run: echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
+      - name: Update target-branch in dependabot.yml
+        run: |
+          ls .github
+          sed -i "s/target-branch: .*/target-branch: ${branch_name}/" .github/dependabot.yml
