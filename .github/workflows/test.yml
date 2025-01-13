@@ -12,3 +12,5 @@ jobs:
           df -h
           free -g
           echo ""
+      - name: Get current branch name
+        run: echo "Current branch is ${GITHUB_REF#refs/heads/}"
