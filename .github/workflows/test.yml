@@ -11,7 +11,7 @@ jobs:
         run: |
           df -h
           free -g
-          echo "device=umi" >> "$GITHUB_ENV"
+          echo "device=lmi" >> "$GITHUB_ENV"
       - name: 下载 TWRP
         if: env.device == 'umi' || env.device == 'cmi'
         run: |
