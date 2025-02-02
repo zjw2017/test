@@ -11,6 +11,9 @@ jobs:
         run: |
           df -h
           free -g
-          echo ""
-      - name: Get current branch name
-        run: echo "Current branch is ${GITHUB_REF#refs/heads/}"
+          echo "device=umi" >> "$GITHUB_ENV"
+      - name: 下载 TWRP
+        if: env.device == 'umi' || env.device == 'cmi'
+        run: |
+          df -h
+          free -g
