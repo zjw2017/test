@@ -17,3 +17,5 @@ jobs:
         run: |
           df -h
           free -g
+          pwd
+          echo $GITHUB_WORKSPACE
