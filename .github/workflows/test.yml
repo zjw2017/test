@@ -25,7 +25,7 @@ jobs:
           mkdir all
           sudo cp -r OS* all/
           sudo 7z a "$GITHUB_WORKSPACE"/all.zip "$GITHUB_WORKSPACE"/all/*
-          rm -rf all
+          sudo rm -rf all
           touch file.log
           echo "all.zip" >file.log
       - name: 上传到 Github Release
