@@ -6,10 +6,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v7.0.1
       - name: 精简无用组件
         run: |
-          df -h
-          free -g
-          pwd
-          echo $GITHUB_WORKSPACE
+          sudo apt-get install aria2
+          sudo chmod -R 777 "$GITHUB_WORKSPACE"
+          for URL in "https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.3.0.VLTCNXM/mayfly-ota_full-OS3.0.3.0.VLTCNXM-user-15.0-16f6dcd338.zip" "https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.4.0.VLECNXM/unicorn-ota_full-OS3.0.4.0.VLECNXM-user-15.0-9be4b80759.zip" "https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/OS3.0.6.0.VLACNXM/thor-ota_full-OS3.0.6.0.VLACNXM-user-15.0-3d1fc60ad4.zip";do
+            package_name=$(echo $URL | cut -d"?" -f1 | cut -d"/" -f5)
+            mkdir -p "$GITHUB_WORKSPACE"/$(echo $URL | cut -d"?" -f1 | cut -d"/" -f4)
+            cd "$GITHUB_WORKSPACE"/"$(echo $URL | cut -d"?" -f1 | cut -d"/" -f4)"
+            aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE" "$URL"
+            "$GITHUB_WORKSPACE"/payload_extract -i "$package_name" -o . -X system
+            "$GITHUB_WORKSPACE"/extract.erofs -i system.img -X /apex/com.android.bt.apex
+            rm -rf system.img
+            rm -rf "$package_name"
+            cd ..
+          done
+          mkdir all
+          sudo cp -r OS* all/
+          sudo 7z a "$GITHUB_WORKSPACE"/all.zip "$GITHUB_WORKSPACE"/all/*
+          rm -rf all
+          touch file.log
+          echo "all.zip" >file.log
+      - name: 上传到 Github Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+          artifacts: "all.zip"
+          name: "all apex"
+          tag: "test"
+          bodyFile: "file.log"
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          makeLatest: true
