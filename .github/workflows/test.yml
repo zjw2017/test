@@ -17,7 +17,7 @@ jobs:
             cd "$GITHUB_WORKSPACE"/"$(echo $URL | cut -d"?" -f1 | cut -d"/" -f4)"
             aria2c -x16 -j$(nproc) -U "Mozilla/5.0" -d "$GITHUB_WORKSPACE"/"$(echo $URL | cut -d"?" -f1 | cut -d"/" -f4)" "$URL"
             "$GITHUB_WORKSPACE"/payload_extract -i "$package_name" -o . -X system
-            "$GITHUB_WORKSPACE"/extract.erofs -i system.img -X /system/apex/com.android.bt.apex
+            "$GITHUB_WORKSPACE"/extract.erofs -i system.img -X /system/apex/com.android.btservices.apex
             rm -rf system.img
             rm -rf "$package_name"
             cd ..
